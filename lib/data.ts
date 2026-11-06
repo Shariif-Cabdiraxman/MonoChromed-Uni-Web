@@ -122,6 +122,36 @@ export const faculties: Faculty[] = [
 export const facultyNote =
   "Filter by faculty to narrow the featured announcement. Each selection loads the matching faculty profile, its current priorities and the announcements published this term.";
 
+/* ---------------------------------------------------------------- about */
+
+export const about = {
+  eyebrow: "The university",
+  heading: "A coastal institution with an outward gaze.",
+  statement:
+    "Founded in Port Adaar, the university has grown from a single department into an institution of seven faculties, teaching more than 6,400 students across diploma, undergraduate and postgraduate programmes, with fieldwork and extension work along fourteen coastal sites.",
+  principles: [
+    {
+      title: "Teaching",
+      body: "Small cohorts, studio and field-based learning, and assessment that rewards applied judgement.",
+    },
+    {
+      title: "Research",
+      body: "A publishing culture built on open data, shared instruments and long-running coastal observation.",
+    },
+    {
+      title: "Public service",
+      body: "Partnerships with districts, clinics and municipalities that put faculty expertise to work locally.",
+    },
+  ],
+  stats: [
+    { value: "07", label: "Faculties" },
+    { value: "6,400", label: "Students" },
+    { value: "14", label: "Coastal sites" },
+    { value: "2009", label: "Founded" },
+  ],
+  note: "The university is administered by a council of representatives and an academic senate. Admission to undergraduate programmes is by completed secondary certificate, with selection applied per faculty.",
+} as const;
+
 /* -------------------------------------------------------------- research */
 
 export const researchCategories = [
@@ -305,11 +335,31 @@ export const newsCards: NewsCard[] = [
 /* ------------------------------------------------------- course search */
 
 export const courseSearch = {
+  eyebrow: "Admissions",
   heading: "Begin at GWK; search programmes across seven faculties.",
   body: "Compare entry requirements, credit loads and field time across every programme, then submit one application covering up to three choices.",
   imageLink: "Admissions",
   imageCaption:
     "Selection is by completed application rather than first sitting. Supporting documents can be uploaded through the student portal at any point before the closing date.",
+  facts: [
+    { label: "Applications open", value: "01 Nov 2026" },
+    { label: "Semester begins", value: "18 Jan 2027" },
+    { label: "Choices per form", value: "Up to three" },
+  ],
+  process: [
+    {
+      title: "Explore",
+      body: "Compare programmes and entry requirements.",
+    },
+    {
+      title: "Apply",
+      body: "Submit one form with up to three choices.",
+    },
+    {
+      title: "Enrol",
+      body: "Confirm your place and register for semester.",
+    },
+  ],
   tracks: [
     {
       id: "undergraduate",

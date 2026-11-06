@@ -1,5 +1,5 @@
 import { nav, site } from "@/lib/site";
-import { Container } from "./ui";
+import { ArrowIcon, Container } from "./ui";
 
 const socials = [
   {
@@ -24,14 +24,19 @@ export function Footer() {
   return (
     <footer className="mt-auto bg-ink text-paper">
       <Container>
-        <div className="grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr]">
-          <div>
-            <span className="font-display text-[1.75rem] font-bold">{site.wordmark}</span>
-            <p className="mt-4 max-w-xs text-[0.8125rem] leading-[1.75] text-paper/60">
+        <div className="grid gap-12 py-16 lg:grid-cols-12 lg:gap-10">
+          <div className="lg:col-span-5">
+            <a
+              href="#top"
+              className="inline-block font-display text-[clamp(3.5rem,8vw,7rem)] leading-none font-bold tracking-[-0.05em] transition-colors duration-200 hover:text-gray"
+            >
+              {site.wordmark}
+            </a>
+            <p className="mt-6 max-w-sm text-[0.875rem] leading-[1.75] text-paper/60">
               {site.tagline}
             </p>
 
-            <div className="mt-7 flex items-center gap-3">
+            <div className="mt-8 flex items-center gap-2">
               {socials.map((s) => (
                 <a
                   key={s.label}
@@ -39,7 +44,12 @@ export function Footer() {
                   aria-label={s.label}
                   className="flex h-9 w-9 items-center justify-center border border-paper/25 transition-colors duration-200 hover:border-paper hover:bg-paper hover:text-ink"
                 >
-                  <svg viewBox="0 0 24 24" aria-hidden className="h-4 w-4" fill="currentColor">
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden
+                    className="h-4 w-4"
+                    fill="currentColor"
+                  >
                     <path d={s.path} />
                   </svg>
                 </a>
@@ -47,8 +57,8 @@ export function Footer() {
             </div>
           </div>
 
-          <div>
-            <h2 className="text-[0.75rem] font-semibold tracking-[0.12em] text-paper/50 uppercase">
+          <div className="lg:col-span-3">
+            <h2 className="font-mono text-[0.5625rem] tracking-[0.16em] text-paper/50 uppercase">
               Quick Links
             </h2>
             <ul className="mt-5 space-y-1">
@@ -69,8 +79,8 @@ export function Footer() {
             </ul>
           </div>
 
-          <div>
-            <h2 className="text-[0.75rem] font-semibold tracking-[0.12em] text-paper/50 uppercase">
+          <div className="lg:col-span-2">
+            <h2 className="font-mono text-[0.5625rem] tracking-[0.16em] text-paper/50 uppercase">
               Contact
             </h2>
             <address className="mt-5 space-y-3 text-[0.875rem] leading-[1.7] text-paper/75 not-italic">
@@ -93,10 +103,29 @@ export function Footer() {
               </p>
             </address>
           </div>
+
+          <div className="lg:col-span-2">
+            <h2 className="font-mono text-[0.5625rem] tracking-[0.16em] text-paper/50 uppercase">
+              Visit
+            </h2>
+            <p className="mt-5 text-[0.875rem] leading-[1.7] text-paper/75">
+              Open days run through the autumn term. Admissions is open
+              weekdays, 09:00–17:00.
+            </p>
+            <a
+              href="#top"
+              className="group mt-6 inline-flex items-center gap-2 font-mono text-[0.5625rem] tracking-[0.14em] text-paper/60 uppercase transition-colors duration-200 hover:text-paper"
+            >
+              Back to top
+              <ArrowIcon className="-rotate-90 transition-transform duration-200 group-hover:-translate-y-0.5" />
+            </a>
+          </div>
         </div>
 
-        <div className="flex flex-col gap-2 border-t border-paper/15 py-6 text-[0.75rem] text-paper/50 sm:flex-row sm:items-center sm:justify-between">
-          <p>&copy; {new Date().getFullYear()} {site.name}</p>
+        <div className="flex flex-col gap-2 border-t border-paper/15 py-6 font-mono text-[0.5625rem] tracking-[0.14em] text-paper/50 uppercase sm:flex-row sm:items-center sm:justify-between">
+          <p>
+            &copy; {new Date().getFullYear()} {site.name}
+          </p>
           <p>All rights reserved</p>
         </div>
       </Container>

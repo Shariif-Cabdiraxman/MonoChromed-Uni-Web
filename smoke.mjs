@@ -18,10 +18,10 @@ check("HTTP 200", res.status === 200, `got ${res.status}`);
 // Note: React SSR splits interleaved text and expressions with comment markers
 // ("About <!-- -->GWK"), so headings built from config are checked by anchor.
 for (const [anchor, word] of [
-  ["about-h", "About"],
-  ["faculties-h", "Faculties"],
-  ["research-h", "Research"],
-  ["news-h", "Latest News"],
+  ["about-h", "A coastal institution"],
+  ["faculties-h", "Seven faculties"],
+  ["research-h", "Fieldwork that leaves"],
+  ["news-h", "Latest news"],
   ["course-h", "Begin at GWK"],
 ]) {
   check(`heading "${word}"`, html.includes(anchor) && html.includes(word));
@@ -31,15 +31,32 @@ check("GWK wordmark", html.includes("GWK"));
 check("no UOH branding remains", !html.includes("UOH"));
 check("no Hargeisa references", !html.includes("Hargeisa"));
 check("no Somaliland references", !html.includes("Somaliland"));
-for (const n of ["Admissions", "News", "Research", "Faculties", "Semester Registration", "Library"]) {
+for (const n of [
+  "Admissions",
+  "News",
+  "Research",
+  "Faculties",
+  "Semester Registration",
+  "Library",
+]) {
   check(`nav "${n}"`, html.includes(n));
 }
 check("sticky header", html.includes("sticky") && html.includes("top-0"));
+check("utility bar term", html.includes("Autumn Term 2026"));
 
 check("hero headline", html.includes("Building resilience along the coast"));
-check("hero crossfade layers", (html.match(/duration-\[1100ms\]/g) || []).length >= 3);
-const tabCount = (html.match(/aria-pressed="(true|false)"/g) || []).length;
-check("filter tabs present", tabCount >= 14, `${tabCount} tabs`);
+check(
+  "hero crossfade layers",
+  (html.match(/duration-\[1100ms\]/g) || []).length >= 3,
+);
+check("hero editorial split", html.includes("lg:grid-cols-12"));
+check("hero slide controls", html.includes("Previous slide") && html.includes("Next slide"));
+
+const pressed = (html.match(/aria-pressed="(true|false)"/g) || []).length;
+check("filter tabs present", pressed >= 10, `${pressed} pressed tabs`);
+check("faculty tablist", html.includes('role="tablist"'));
+check("faculty tabs", (html.match(/role="tab"/g) || []).length >= 7);
+check("faculty tabpanel", html.includes('role="tabpanel"'));
 
 for (const f of [
   "Marine &amp; Coastal Sciences",
@@ -52,19 +69,33 @@ for (const f of [
 ]) {
   check(`faculty "${f.replace(/&amp;/g, "&")}"`, html.includes(f));
 }
-check("NOTE: label", html.includes("Note:"));
-for (const c of ["Marine Biology", "Climate Systems", "Artificial Intelligence", "Public Health", "Renewable Technology", "Education"]) {
+check("NOTE label", html.includes("Note"));
+for (const c of [
+  "Marine Biology",
+  "Climate Systems",
+  "Artificial Intelligence",
+  "Public Health",
+  "Renewable Technology",
+  "Education",
+]) {
   check(`research tab "${c}"`, html.includes(c));
 }
 
-// 3 hero + 1 faculty + 4 research + 4 news + 2 course = 14 plates
+// 3 hero + 1 about + 1 faculty + 4 research + 4 news + 2 course = 15 plates
 const plates = (html.match(/viewBox="0 0 1200 800"/g) || []).length;
-check("generated art plates", plates === 14, `${plates} plates`);
-check("4-col card grid", html.includes("lg:grid-cols-4"));
+check("generated art plates", plates === 15, `${plates} plates`);
+check("open access badge", html.includes("Open access"));
 check("carousel controls", html.includes("Previous") && html.includes("Next"));
 check("course accordion", html.includes("Undergraduates"));
 check("aria-expanded wired", html.includes("aria-expanded"));
 check("admissions link", html.includes("Admissions"));
+check("application process", html.includes("Explore") && html.includes("Enrol"));
+check("admissions key dates", html.includes("Applications open"));
+check("site index panel", html.includes('id="site-index"'));
+check("search field", html.includes('id="site-search"'));
+check("section index rail", html.includes("GWK / Index"));
+check("closing CTA", html.includes("Your next chapter"));
+check("skip link", html.includes("Skip to content"));
 check("footer quick links", html.includes("Quick Links"));
 check("footer copyright", html.includes("All rights reserved"));
 check("reveal wrappers", html.includes("data-shown"));
@@ -79,6 +110,7 @@ check("reduced-motion honoured", css.includes("prefers-reduced-motion"));
 check("reveal keyframes present", css.includes("fadeUp"));
 check("serif display font", css.includes("Source Serif") || css.includes("source-serif"));
 check("body sans font", /Inter|--font-inter/.test(css));
+check("mono label font", /IBM Plex Mono|plex-mono/.test(css) || html.includes("--font-plex-mono"));
 
 // Palette discipline, measured on the stylesheet only.
 // Tailwind v4 encodes alpha as an extra byte on the hex (#111 + 14% -> #11111114),

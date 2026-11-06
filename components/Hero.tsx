@@ -1,15 +1,16 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { slides } from "@/lib/data";
 import { Art } from "@/lib/art";
-import { Container, DatePill } from "./ui";
+import { slides } from "@/lib/data";
+import { ActionLink, ArrowIcon, Container, Eyebrow } from "./ui";
 
 const INTERVAL = 6500;
 
 export function Hero() {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [reduced, setReduced] = useState(false);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const go = useCallback((next: number) => {
@@ -17,151 +18,155 @@ export function Hero() {
   }, []);
 
   useEffect(() => {
-    if (paused) return;
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduced(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    if (paused || reduced) return;
     timer.current = setInterval(() => {
       setIndex((i) => (i + 1) % slides.length);
     }, INTERVAL);
     return () => {
       if (timer.current) clearInterval(timer.current);
     };
-  }, [paused]);
+  }, [paused, reduced]);
 
   return (
     <section
       id="top"
-      className="relative isolate overflow-hidden bg-paper"
+      className="relative border-b border-line bg-paper"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
       aria-roledescription="carousel"
       aria-label="Featured stories"
     >
-      {/* Crossfading plates */}
-      <div className="relative h-[62vh] min-h-[420px] w-full md:h-[68vh]">
-        {slides.map((s, i) => (
-          <div
-            key={s.id}
-            className={[
-              "absolute inset-0 transition-opacity duration-[1100ms] ease-in-out",
-              i === index ? "opacity-100" : "pointer-events-none opacity-0",
-            ].join(" ")}
-            aria-hidden={i !== index}
-          >
-            <Art
-              seed={s.id}
-              tone="ink"
-              className="h-full w-full"
-              label={i === index ? s.headline : undefined}
-            />
-          </div>
-        ))}
+      <Container>
+        <div className="grid lg:min-h-[44rem] lg:grid-cols-12">
+          {/* Editorial panel */}
+          <div className="flex flex-col justify-between border-line py-10 lg:col-span-7 lg:border-r lg:py-14 lg:pr-12">
+            <div className="flex items-center justify-between gap-6">
+              <Eyebrow className="text-gray">Featured story</Eyebrow>
+              <span className="font-mono text-[0.625rem] tracking-[0.16em] text-gray">
+                {String(index + 1).padStart(2, "0")} /{" "}
+                {String(slides.length).padStart(2, "0")}
+              </span>
+            </div>
 
-        {/* Legibility veil over the dark plate */}
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/55 to-ink/30"
-        />
-
-        <Container>
-          <div className="relative flex h-full flex-col justify-end pb-14 md:pb-16">
             <div
               key={slides[index].id}
-              className="max-w-3xl motion-safe:animate-[fadeUp_.7s_cubic-bezier(.22,1,.36,1)_both]"
+              className="my-10 motion-safe:animate-[fadeUp_.7s_cubic-bezier(.22,1,.36,1)_both] lg:my-14"
             >
-              <DatePill>{slides[index].date}</DatePill>
+              <p className="font-mono text-[0.625rem] tracking-[0.16em] text-gray uppercase">
+                {slides[index].date}
+              </p>
 
-              <h1 className="mt-6 font-display text-[clamp(2rem,5.4vw,3.75rem)] leading-[1.04] tracking-[-0.025em] text-paper">
+              <h1 className="mt-6 max-w-3xl font-display text-[clamp(2.5rem,5.8vw,5.25rem)] leading-[0.94] tracking-[-0.04em] text-balance">
                 {slides[index].headline}
               </h1>
 
-              <p className="mt-5 max-w-2xl text-[0.9375rem] leading-[1.65] text-paper/75 md:text-base">
+              <p className="mt-7 max-w-xl text-[0.9375rem] leading-[1.75] text-gray">
                 {slides[index].body}
               </p>
 
-              <div className="mt-8">
-                <a href="#news" className="inline-block">
-                  <span className="group inline-flex items-center gap-2.5 bg-paper px-5 py-3 text-[0.8125rem] font-medium text-ink transition-colors duration-200 hover:bg-gray hover:text-paper">
-                    {slides[index].cta}
-                    <svg
-                      viewBox="0 0 16 16"
-                      aria-hidden
-                      className="h-[0.7em] w-[0.7em] transition-transform duration-200 group-hover:translate-x-0.5"
-                      fill="none"
+              <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
+                <ActionLink href="#news">{slides[index].cta}</ActionLink>
+                <ActionLink href="#about" variant="text">
+                  About the university
+                </ActionLink>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-end justify-between gap-6 border-t border-line pt-6">
+              <div className="flex items-end gap-2">
+                {slides.map((s, i) => (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => go(i)}
+                    aria-label={`Show slide ${i + 1} of ${slides.length}`}
+                    aria-current={i === index}
+                    className="group flex flex-col gap-2 py-1"
+                  >
+                    <span
+                      className={[
+                        "font-mono text-[0.5rem] tracking-[0.14em] transition-colors duration-200",
+                        i === index ? "text-ink" : "text-gray",
+                      ].join(" ")}
                     >
-                      <path
-                        d="M5.5 3.5 10 8l-4.5 4.5"
-                        stroke="currentColor"
-                        strokeWidth="1.75"
-                        strokeLinecap="square"
-                      />
-                    </svg>
-                  </span>
-                </a>
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span
+                      className={[
+                        "block h-[3px] transition-all duration-300",
+                        i === index
+                          ? "w-12 bg-ink"
+                          : "w-6 bg-ink/20 group-hover:bg-ink/45",
+                      ].join(" ")}
+                    />
+                  </button>
+                ))}
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => go(index - 1)}
+                  aria-label="Previous slide"
+                  className="flex h-9 w-9 items-center justify-center border border-ink transition-colors duration-200 hover:bg-ink hover:text-paper"
+                >
+                  <ArrowIcon className="rotate-180" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => go(index + 1)}
+                  aria-label="Next slide"
+                  className="flex h-9 w-9 items-center justify-center border border-ink transition-colors duration-200 hover:bg-ink hover:text-paper"
+                >
+                  <ArrowIcon />
+                </button>
               </div>
             </div>
           </div>
-        </Container>
-      </div>
 
-      {/* Manual controls */}
-      <Container>
-        <div className="flex items-center justify-between gap-4 border-t border-line py-5">
-          {/* Progress ticks */}
-          <div className="flex items-center gap-2">
+          {/* Art panel */}
+          <div className="relative min-h-[24rem] overflow-hidden bg-ink sm:min-h-[30rem] lg:col-span-5 lg:min-h-0">
             {slides.map((s, i) => (
-              <button
+              <div
                 key={s.id}
-                type="button"
-                onClick={() => go(i)}
-                aria-label={`Show slide ${i + 1} of ${slides.length}`}
-                aria-current={i === index}
-                className="group py-2"
+                className={[
+                  "absolute inset-0 transition-opacity duration-[1100ms] ease-in-out",
+                  i === index ? "opacity-100" : "pointer-events-none opacity-0",
+                ].join(" ")}
+                aria-hidden={i !== index}
               >
-                <span
-                  className={[
-                    "block h-[3px] transition-all duration-300",
-                    i === index
-                      ? "w-10 bg-ink"
-                      : "w-5 bg-ink/20 group-hover:bg-ink/45",
-                  ].join(" ")}
+                <Art
+                  seed={s.id}
+                  tone="ink"
+                  className="h-full w-full"
+                  label={i === index ? s.headline : undefined}
                 />
-              </button>
+              </div>
             ))}
-          </div>
 
-          <div className="flex items-center gap-2">
-            <span className="mr-2 hidden text-[0.75rem] tracking-[0.08em] text-gray uppercase sm:inline">
-              {String(index + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
-            </span>
-            <button
-              type="button"
-              onClick={() => go(index - 1)}
-              aria-label="Previous slide"
-              className="flex h-9 w-9 items-center justify-center bg-ink text-paper transition-colors duration-200 hover:bg-gray"
-            >
-              <svg viewBox="0 0 16 16" aria-hidden className="h-3.5 w-3.5" fill="none">
-                <path
-                  d="M10.5 3.5 6 8l4.5 4.5"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                  strokeLinecap="square"
-                />
-              </svg>
-            </button>
-            <button
-              type="button"
-              onClick={() => go(index + 1)}
-              aria-label="Next slide"
-              className="flex h-9 w-9 items-center justify-center bg-ink text-paper transition-colors duration-200 hover:bg-gray"
-            >
-              <svg viewBox="0 0 16 16" aria-hidden className="h-3.5 w-3.5" fill="none">
-                <path
-                  d="M5.5 3.5 10 8l-4.5 4.5"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                  strokeLinecap="square"
-                />
-              </svg>
-            </button>
+            <div
+              aria-hidden
+              className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent"
+            />
+
+            <div className="absolute inset-x-6 bottom-6 flex items-end justify-between gap-4 text-paper">
+              <span className="font-mono text-[0.5625rem] tracking-[0.16em] uppercase">
+                Plate {String(index + 1).padStart(2, "0")}
+              </span>
+              <span className="max-w-[12rem] text-right text-[0.6875rem] leading-snug text-paper/70">
+                {slides[index].date}
+              </span>
+            </div>
           </div>
         </div>
       </Container>

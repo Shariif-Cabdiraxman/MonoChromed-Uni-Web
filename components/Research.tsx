@@ -4,10 +4,11 @@ import { useMemo, useState } from "react";
 import { Art } from "@/lib/art";
 import { researchCards, researchCategories } from "@/lib/data";
 import {
+  ActionLink,
   Container,
   PairPills,
   Reveal,
-  SectionHeading,
+  SectionHeader,
   Tab,
 } from "./ui";
 
@@ -19,10 +20,15 @@ export function Research() {
 
   const filtered = useMemo(() => {
     if (category === "random") {
-      // Deterministic rotation so "Random" is stable across renders.
-      return [...researchCards].sort(
-        (a, b) => a.id.charCodeAt(1) - b.id.charCodeAt(1),
-      );
+      // Deterministic shuffle: stable across renders, but visibly reordered.
+      const shuffled = [...researchCards];
+      let seed = 0x9e3779b9;
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+        const j = seed % (i + 1);
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
     }
     if (category === "date") return researchCards;
     return researchCards.filter((c) => c.category === category);
@@ -32,7 +38,11 @@ export function Research() {
 
   // Clamp when the active filter yields fewer pages than the current index.
   const safePage = Math.min(page, pages - 1);
-  const visible = filtered.slice(safePage * PER_PAGE, safePage * PER_PAGE + PER_PAGE);
+  const visible = filtered.slice(
+    safePage * PER_PAGE,
+    safePage * PER_PAGE + PER_PAGE,
+  );
+  const [lead, ...rest] = visible;
 
   const selectCategory = (id: string) => {
     setCategory(id);
@@ -51,21 +61,26 @@ export function Research() {
     >
       <Container>
         <Reveal>
-          <SectionHeading
+          <SectionHeader
+            index="03"
+            eyebrow="Research & publication"
+            title="Fieldwork that leaves a public record."
+            id="research-h"
+            description="Papers, datasets and long-running observations from across the seven faculties. Open-access entries are marked and published for reuse."
             aside={
               <PairPills
                 onPrev={() => paginate(-1)}
                 onNext={() => paginate(1)}
+                prevDisabled={safePage === 0}
+                nextDisabled={safePage >= pages - 1}
               />
             }
-          >
-            <span id="research-h">Research &amp; Publication</span>
-          </SectionHeading>
+          />
         </Reveal>
 
         <Reveal delay={60}>
           <div
-            className="mt-10 flex flex-wrap gap-2.5"
+            className="mt-10 flex flex-wrap items-center gap-2"
             role="group"
             aria-label="Filter research by category"
           >
@@ -78,58 +93,109 @@ export function Research() {
                 {c.label}
               </Tab>
             ))}
+            <span className="ml-auto hidden font-mono text-[0.5625rem] tracking-[0.14em] text-gray uppercase sm:block">
+              {filtered.length} entries
+            </span>
           </div>
         </Reveal>
 
         <Reveal delay={100}>
           <div
             key={`${category}-${safePage}`}
-            className="mt-12 grid gap-x-6 gap-y-12 motion-safe:animate-[fadeUp_.5s_cubic-bezier(.22,1,.36,1)_both] sm:grid-cols-2 lg:grid-cols-4"
+            className="mt-12 grid gap-10 lg:grid-cols-12 lg:gap-12"
             aria-live="polite"
           >
-            {visible.map((card) => (
-              <article key={card.id} className="group flex flex-col">
-                <div className="aspect-square w-full overflow-hidden">
+            {lead ? (
+              <article className="group lg:col-span-6">
+                <div className="aspect-[16/11] w-full overflow-hidden border border-line bg-ink">
                   <Art
-                    seed={`research-${card.id}`}
-                    className="h-full w-full transition-transform duration-500 group-hover:scale-[1.03]"
-                    label={`Abstract plate for ${card.title}`}
+                    seed={`research-${lead.id}`}
+                    tone="ink"
+                    className="h-full w-full transition-transform duration-700 group-hover:scale-[1.02]"
+                    label={`Abstract plate for ${lead.title}`}
                   />
                 </div>
 
-                <p className="mt-5 text-[0.6875rem] tracking-[0.08em] text-gray uppercase">
-                  {card.date}
-                </p>
+                <div className="mt-5 flex flex-wrap items-center gap-3 font-mono text-[0.5625rem] tracking-[0.14em] text-gray uppercase">
+                  <span>{lead.date}</span>
+                  {lead.linked ? (
+                    <span className="border border-line px-2 py-1 text-ink">
+                      Open access
+                    </span>
+                  ) : null}
+                </div>
 
-                <h3 className="mt-2.5 font-display text-[1.0625rem] leading-[1.32] font-semibold">
-                  {card.linked ? (
+                <h3 className="mt-3 max-w-xl font-display text-[clamp(1.6rem,2.6vw,2.35rem)] leading-[1.08] tracking-[-0.025em]">
+                  {lead.linked ? (
                     <a
                       href="#research"
-                      className="underline decoration-1 underline-offset-4 transition-colors duration-200 group-hover:text-gray"
+                      className="transition-colors duration-200 hover:text-gray"
                     >
-                      {card.title}
+                      {lead.title}
                     </a>
                   ) : (
-                    card.title
+                    lead.title
                   )}
                 </h3>
 
-                <p className="mt-3 flex-1 text-[0.875rem] leading-[1.7] text-gray">
-                  {card.body}
+                <p className="mt-3 max-w-xl text-[0.9375rem] leading-[1.75] text-gray">
+                  {lead.body}
                 </p>
 
-                <a
-                  href="#research"
-                  className="mt-4 self-start text-[0.8125rem] font-medium underline decoration-1 underline-offset-4 transition-colors duration-200 hover:text-gray"
-                >
-                  View more
-                </a>
+                <ActionLink href="#research" variant="text" className="mt-5">
+                  Read the paper
+                </ActionLink>
               </article>
-            ))}
+            ) : null}
+
+            <div className="flex flex-col lg:col-span-6">
+              {rest.map((card) => (
+                <article
+                  key={card.id}
+                  className="group flex gap-5 border-t border-line py-6 first:border-t-0 first:pt-0"
+                >
+                  <div className="aspect-square w-24 shrink-0 overflow-hidden border border-line bg-ink sm:w-32">
+                    <Art
+                      seed={`research-${card.id}`}
+                      tone="ink"
+                      className="h-full w-full transition-transform duration-700 group-hover:scale-[1.03]"
+                      label={`Abstract plate for ${card.title}`}
+                    />
+                  </div>
+
+                  <div className="min-w-0">
+                    <p className="font-mono text-[0.5625rem] tracking-[0.14em] text-gray uppercase">
+                      {card.date}
+                    </p>
+                    <h3 className="mt-2 font-display text-[1.0625rem] leading-snug font-semibold">
+                      {card.linked ? (
+                        <a
+                          href="#research"
+                          className="transition-colors duration-200 hover:text-gray"
+                        >
+                          {card.title}
+                        </a>
+                      ) : (
+                        card.title
+                      )}
+                    </h3>
+                    <p className="mt-2 line-clamp-2 text-[0.8125rem] leading-[1.7] text-gray">
+                      {card.body}
+                    </p>
+                    <a
+                      href="#research"
+                      className="mt-3 inline-block font-mono text-[0.5625rem] font-medium tracking-[0.14em] uppercase underline decoration-1 underline-offset-4 transition-colors duration-200 hover:text-gray"
+                    >
+                      View more
+                    </a>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </Reveal>
 
-        <div className="mt-12 flex items-center justify-center gap-3 text-[0.75rem] tracking-[0.08em] text-gray uppercase">
+        <div className="mt-12 flex items-center justify-center gap-3 font-mono text-[0.5625rem] tracking-[0.14em] text-gray uppercase">
           <span>
             Page {safePage + 1} of {pages}
           </span>
