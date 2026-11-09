@@ -5,15 +5,15 @@
  */
 export const site = {
   /** Short wordmark used in the header and footer. */
-  wordmark: "GWK",
+  wordmark: "XEEB",
   /** Full display name used in prose and metadata. */
-  name: "GWK University",
+  name: "Xeeb University",
   /** Campus location. */
-  location: "Port Adaar, Coastal Region",
+  location: "Port Adaar, Xeebta Soomaaliyeed",
   /** Current academic term, shown in the utility bar. */
   term: "Autumn Term 2026",
   tagline: "Teaching and research shaped by the coast it sits beside.",
-  email: "office@gwk.example.edu",
+  email: "office@xeeb.example.edu",
   phone: "+00 000 000 0000",
 } as const;
 

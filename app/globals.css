@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /*
- * GWK monochrome system — exactly three values.
+ * Xeeb monochrome system — exactly three values.
  * Hairlines, shadows, veils and hover states are alpha derivations of `ink`
  * or `paper`, never new hues.
  */
@@ -88,6 +88,33 @@
   letter-spacing: 0.16em;
   line-height: 1.2;
   text-transform: uppercase;
+}
+
+/*
+ * Underline that draws itself in from the first letter to the last. Uses a
+ * scale transform (not width) so the motion stays on the compositor and reads
+ * as a single smooth stroke.
+ */
+@utility link-underline {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: -0.18em;
+    left: 0;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    transform: scaleX(1);
+  }
 }
 
 /* Reveal-on-scroll: initial state lives here so no-JS never hides content. */

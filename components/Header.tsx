@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Art } from "@/lib/art";
 import { nav, site } from "@/lib/site";
 import {
   ActionLink,
@@ -64,13 +65,13 @@ export function Header() {
             <div className="flex items-center gap-6">
               <a
                 href="#admissions"
-                className="transition-colors duration-200 hover:text-ink"
+                className="link-underline transition-colors duration-200 hover:text-ink"
               >
                 Student portal
               </a>
               <a
                 href="#admissions"
-                className="transition-colors duration-200 hover:text-ink"
+                className="link-underline transition-colors duration-200 hover:text-ink"
               >
                 Apply
               </a>
@@ -88,10 +89,18 @@ export function Header() {
         <Container>
           <div className="flex h-[4.5rem] items-center justify-between gap-6">
             <a href="#top" className="group flex items-center gap-3">
-              <span className="flex h-9 w-9 items-center justify-center border border-ink bg-ink text-paper transition-colors duration-200 group-hover:bg-paper group-hover:text-ink">
-                <span className="font-display text-lg leading-none font-bold">
-                  G
-                </span>
+              <span className="flex h-10 w-10 items-center justify-center border border-ink bg-ink text-paper transition-colors duration-200 group-hover:bg-paper group-hover:text-ink">
+                <svg
+                  viewBox="0 0 20 20"
+                  aria-hidden
+                  className="h-[18px] w-[18px]"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.6"
+                  strokeLinecap="square"
+                >
+                  <path d="m4 4 12 12M16 4 4 16" />
+                </svg>
               </span>
               <span className="flex flex-col leading-none">
                 <span className="font-display text-[1.35rem] font-bold tracking-[0.04em]">
@@ -109,13 +118,9 @@ export function Header() {
                 <a
                   key={item.label}
                   href={item.href}
-                  className="group relative py-1 font-mono text-[0.625rem] font-medium tracking-[0.13em] uppercase transition-colors duration-200 hover:text-gray"
+                  className="link-underline py-1 font-mono text-[0.625rem] font-medium tracking-[0.13em] uppercase transition-colors duration-200 hover:text-gray"
                 >
                   {item.label}
-                  <span
-                    aria-hidden
-                    className="absolute inset-x-0 -bottom-0.5 h-px w-0 bg-ink transition-all duration-200 group-hover:w-full"
-                  />
                 </a>
               ))}
             </nav>
@@ -143,10 +148,19 @@ export function Header() {
                 }}
                 aria-expanded={mega}
                 aria-controls="site-index"
-                className="hidden h-9 items-center gap-2 px-2.5 font-mono text-[0.625rem] font-medium tracking-[0.12em] uppercase transition-colors duration-200 hover:text-gray lg:flex"
+                className={[
+                  "hidden h-9 items-center gap-2 px-2.5 font-mono text-[0.625rem] font-medium tracking-[0.12em] uppercase transition-colors duration-200 lg:flex",
+                  mega ? "text-ink" : "hover:text-gray",
+                ].join(" ")}
               >
                 <MenuIcon className="h-[17px] w-[17px]" />
                 Index
+                <ArrowIcon
+                  className={[
+                    "rotate-90 transition-transform duration-300",
+                    mega ? "-rotate-90" : "",
+                  ].join(" ")}
+                />
               </button>
 
               <ActionLink href="#admissions" className="ml-2 max-sm:hidden">
@@ -171,18 +185,18 @@ export function Header() {
         <div
           id="site-index"
           className={[
-            "overflow-hidden border-t border-line bg-paper transition-[max-height,opacity] duration-300 ease-out",
+            "overflow-hidden border-t border-line bg-paper transition-[max-height,opacity] duration-500 ease-out",
             mega
-              ? "visible max-h-[34rem] opacity-100"
+              ? "visible max-h-[40rem] opacity-100"
               : "invisible max-h-0 opacity-0",
           ].join(" ")}
           aria-hidden={!mega}
         >
           <Container>
-            <div className="grid gap-8 py-8 lg:grid-cols-[1fr_18rem]">
+            <div className="grid gap-8 py-8 lg:grid-cols-12 lg:gap-12">
               <nav
                 aria-label="Site index"
-                className="grid gap-x-8 sm:grid-cols-2"
+                className="grid gap-x-10 sm:grid-cols-2 lg:col-span-7"
               >
                 {nav.map((item, i) => (
                   <a
@@ -191,13 +205,15 @@ export function Header() {
                     onClick={() => setMega(false)}
                     className="group flex items-start gap-4 border-b border-line-soft py-4 transition-colors duration-200 hover:text-gray"
                   >
-                    <span className="mt-1 font-mono text-[0.5625rem] tracking-[0.14em] text-gray">
+                    <span className="mt-1.5 font-mono text-[0.5625rem] tracking-[0.14em] text-gray">
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="flex items-center justify-between gap-4 font-display text-lg font-semibold">
-                        {item.label}
-                        <ArrowIcon className="text-gray transition-transform duration-200 group-hover:translate-x-1" />
+                      <span className="flex items-baseline justify-between gap-4">
+                        <span className="link-underline font-display text-lg font-semibold">
+                          {item.label}
+                        </span>
+                        <ArrowIcon className="shrink-0 text-gray transition-transform duration-300 group-hover:translate-x-1" />
                       </span>
                       <span className="mt-1 block text-[0.75rem] leading-relaxed text-gray">
                         {item.note}
@@ -207,23 +223,36 @@ export function Header() {
                 ))}
               </nav>
 
-              <div className="flex flex-col justify-between border border-line p-5">
-                <div>
-                  <p className="font-mono text-[0.5625rem] tracking-[0.16em] text-gray uppercase">
+              <a
+                href="#admissions"
+                onClick={() => setMega(false)}
+                className="group relative block overflow-hidden border border-line bg-ink lg:col-span-5"
+              >
+                <div className="aspect-[16/11] w-full">
+                  <Art
+                    seed="index-campus-visit"
+                    tone="ink"
+                    className="h-full w-full transition-transform duration-700 group-hover:scale-[1.03]"
+                    label="Abstract plate for campus visits"
+                  />
+                </div>
+                <div
+                  aria-hidden
+                  className="absolute inset-0 bg-gradient-to-t from-ink via-ink/30 to-transparent"
+                />
+                <div className="absolute inset-0 flex flex-col justify-end p-6 text-paper">
+                  <p className="font-mono text-[0.5625rem] tracking-[0.16em] text-paper/60 uppercase">
                     Visit the campus
                   </p>
-                  <p className="mt-3 font-display text-2xl leading-tight">
+                  <p className="mt-3 max-w-xs font-display text-2xl leading-tight">
                     Open days run through the autumn term.
                   </p>
-                  <p className="mt-3 text-[0.8125rem] leading-relaxed text-gray">
-                    Tour the coastal research station, meet faculty and sit in
-                    on a first-year seminar.
-                  </p>
+                  <span className="mt-5 inline-flex items-center gap-2 font-mono text-[0.5625rem] tracking-[0.14em] uppercase">
+                    Book a visit
+                    <ArrowIcon className="transition-transform duration-300 group-hover:translate-x-1" />
+                  </span>
                 </div>
-                <ActionLink href="#admissions" variant="outline" className="mt-6 self-start">
-                  Book a visit
-                </ActionLink>
-              </div>
+              </a>
             </div>
           </Container>
         </div>
@@ -272,7 +301,7 @@ export function Header() {
                   <a
                     key={term}
                     href={`#${term.toLowerCase()}`}
-                    className="transition-colors duration-200 hover:text-ink"
+                    className="link-underline transition-colors duration-200 hover:text-ink"
                   >
                     {term}
                   </a>
@@ -329,7 +358,7 @@ export function Header() {
                 <span className="mt-1 font-mono text-[0.5625rem] tracking-[0.14em] text-gray">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <span className="flex-1 font-display text-lg font-semibold">
+                <span className="link-underline flex-1 font-display text-lg font-semibold">
                   {item.label}
                 </span>
                 <ArrowIcon className="mt-2 text-gray transition-transform duration-200 group-hover:translate-x-1" />
@@ -342,12 +371,12 @@ export function Header() {
             </p>
             <a
               href={`mailto:${site.email}`}
-              className="mt-2 block text-[0.8125rem] transition-colors duration-200 hover:text-gray"
+              className="link-underline mt-2 inline-block text-[0.8125rem] transition-colors duration-200 hover:text-gray"
             >
               {site.email}
             </a>
             <ActionLink href="#admissions" className="mt-5 w-full">
-              Apply to GWK
+              Apply to Xeeb
             </ActionLink>
           </div>
         </div>

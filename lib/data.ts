@@ -1,5 +1,5 @@
 /**
- * Editorial content for the GWK University monochrome homepage.
+ * Editorial content for the Xeeb University monochrome homepage.
  *
  * Entirely original — written for this project. No text or imagery is taken
  * from any existing institution, and all artwork is generated (see lib/art.tsx).
@@ -128,7 +128,7 @@ export const about = {
   eyebrow: "The university",
   heading: "A coastal institution with an outward gaze.",
   statement:
-    "Founded in Port Adaar, the university has grown from a single department into an institution of seven faculties, teaching more than 6,400 students across diploma, undergraduate and postgraduate programmes, with fieldwork and extension work along fourteen coastal sites.",
+    "Founded in Port Adaar on the Somali coast, the university has grown from a single department into an institution of seven faculties, teaching more than 6,400 students across diploma, undergraduate and postgraduate programmes, with fieldwork and extension work along fourteen coastal sites.",
   principles: [
     {
       title: "Teaching",
@@ -336,7 +336,7 @@ export const newsCards: NewsCard[] = [
 
 export const courseSearch = {
   eyebrow: "Admissions",
-  heading: "Begin at GWK; search programmes across seven faculties.",
+  heading: "Begin at Xeeb; search programmes across seven faculties.",
   body: "Compare entry requirements, credit loads and field time across every programme, then submit one application covering up to three choices.",
   imageLink: "Admissions",
   imageCaption:

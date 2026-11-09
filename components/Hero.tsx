@@ -134,8 +134,9 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Art panel */}
-          <div className="relative min-h-[24rem] overflow-hidden bg-ink sm:min-h-[30rem] lg:col-span-5 lg:min-h-0">
+          {/* Art panel — inset on large screens so its frame aligns with the
+              editorial content rather than bleeding to the section edges. */}
+          <div className="relative min-h-[24rem] overflow-hidden bg-ink sm:min-h-[30rem] lg:col-span-5 lg:my-14 lg:min-h-0">
             {slides.map((s, i) => (
               <div
                 key={s.id}

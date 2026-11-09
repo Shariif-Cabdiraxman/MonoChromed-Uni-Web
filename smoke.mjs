@@ -16,18 +16,18 @@ check("HTTP 200", res.status === 200, `got ${res.status}`);
 /* ------------------------------------------------------------------ DOM */
 
 // Note: React SSR splits interleaved text and expressions with comment markers
-// ("About <!-- -->GWK"), so headings built from config are checked by anchor.
+// ("About <!-- -->XEEB"), so headings built from config are checked by anchor.
 for (const [anchor, word] of [
   ["about-h", "A coastal institution"],
   ["faculties-h", "Seven faculties"],
   ["research-h", "Fieldwork that leaves"],
   ["news-h", "Latest news"],
-  ["course-h", "Begin at GWK"],
+  ["course-h", "Begin at Xeeb"],
 ]) {
   check(`heading "${word}"`, html.includes(anchor) && html.includes(word));
 }
 
-check("GWK wordmark", html.includes("GWK"));
+check("XEEB wordmark", html.includes("XEEB"));
 check("no UOH branding remains", !html.includes("UOH"));
 check("no Hargeisa references", !html.includes("Hargeisa"));
 check("no Somaliland references", !html.includes("Somaliland"));
@@ -93,7 +93,7 @@ check("application process", html.includes("Explore") && html.includes("Enrol"))
 check("admissions key dates", html.includes("Applications open"));
 check("site index panel", html.includes('id="site-index"'));
 check("search field", html.includes('id="site-search"'));
-check("section index rail", html.includes("GWK / Index"));
+check("section index rail", html.includes("XEEB / Index"));
 check("closing CTA", html.includes("Your next chapter"));
 check("skip link", html.includes("Skip to content"));
 check("footer quick links", html.includes("Quick Links"));

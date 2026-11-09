@@ -66,12 +66,8 @@ export function Footer() {
                 <li key={item.label}>
                   <a
                     href={item.href}
-                    className="group inline-flex items-center gap-2 py-1.5 text-[0.875rem] text-paper/75 transition-colors duration-200 hover:text-paper"
+                    className="link-underline inline-block py-1.5 text-[0.875rem] text-paper/75 transition-colors duration-200 hover:text-paper"
                   >
-                    <span
-                      aria-hidden
-                      className="h-px w-0 bg-paper transition-all duration-200 group-hover:w-3"
-                    />
                     {item.label}
                   </a>
                 </li>

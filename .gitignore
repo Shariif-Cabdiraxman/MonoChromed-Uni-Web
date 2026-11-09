@@ -20,6 +20,17 @@
 # production
 /build
 
+# static export copied into the project root for Apache (localhost/MonoChrome)
+/_next/
+/index.html
+/index.txt
+/404.html
+/favicon.ico
+/_not-found/
+/_not-found.html
+/_not-found.txt
+/__next.*.txt
+
 # env files — never commit real secrets.
 # .env.example IS tracked on purpose (templates must be shared).
 .env

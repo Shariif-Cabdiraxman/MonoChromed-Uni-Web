@@ -50,7 +50,7 @@ export function Research() {
   };
 
   const paginate = (delta: number) => {
-    setPage((p) => Math.min(Math.max(p + delta, 0), pages - 1));
+    setPage((p) => (Math.min(p, pages - 1) + delta + pages) % pages);
   };
 
   return (
@@ -71,8 +71,8 @@ export function Research() {
               <PairPills
                 onPrev={() => paginate(-1)}
                 onNext={() => paginate(1)}
-                prevDisabled={safePage === 0}
-                nextDisabled={safePage >= pages - 1}
+                prevDisabled={pages <= 1}
+                nextDisabled={pages <= 1}
               />
             }
           />
@@ -102,7 +102,7 @@ export function Research() {
         <Reveal delay={100}>
           <div
             key={`${category}-${safePage}`}
-            className="mt-12 grid gap-10 lg:grid-cols-12 lg:gap-12"
+            className="mt-12 grid gap-10 lg:grid-cols-12 lg:items-start lg:gap-12"
             aria-live="polite"
           >
             {lead ? (

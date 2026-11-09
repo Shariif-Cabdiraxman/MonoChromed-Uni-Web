@@ -3,12 +3,7 @@
 import { Art } from "@/lib/art";
 import { about } from "@/lib/data";
 import { site } from "@/lib/site";
-import {
-  ActionLink,
-  Container,
-  Reveal,
-  SectionHeader,
-} from "./ui";
+import { ActionLink, Container, Reveal, SectionHeader } from "./ui";
 
 export function About() {
   return (
@@ -32,43 +27,56 @@ export function About() {
           />
         </Reveal>
 
-        <div className="mt-14 grid gap-12 lg:grid-cols-12 lg:gap-16">
+        <div className="mt-14 grid gap-12 lg:grid-cols-12 lg:items-start lg:gap-16">
           <Reveal className="lg:col-span-7" delay={60}>
             <p className="max-w-3xl font-display text-[clamp(1.5rem,2.7vw,2.35rem)] leading-[1.35] tracking-[-0.02em] text-pretty">
               {about.statement}
             </p>
 
-            <div className="mt-10 grid gap-px border border-line bg-line sm:grid-cols-3">
+            <div className="mt-10 border-t border-line">
               {about.principles.map((principle, i) => (
-                <div key={principle.title} className="bg-paper p-5">
-                  <span className="font-mono text-[0.5625rem] tracking-[0.16em] text-gray">
+                <div
+                  key={principle.title}
+                  className="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 border-b border-line py-6 sm:grid-cols-12 sm:items-start"
+                >
+                  <span className="mt-1 font-mono text-[0.5625rem] tracking-[0.16em] text-gray sm:col-span-1">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="mt-4 font-display text-xl font-semibold">
+                  <h3 className="font-display text-2xl font-semibold sm:col-span-4">
                     {principle.title}
                   </h3>
-                  <p className="mt-2 text-[0.8125rem] leading-[1.7] text-gray">
+                  <p className="text-[0.875rem] leading-[1.75] text-gray sm:col-span-7">
                     {principle.body}
                   </p>
                 </div>
               ))}
             </div>
+
+            <ActionLink href="#faculties" variant="outline" className="mt-10">
+              Explore the faculties
+            </ActionLink>
           </Reveal>
 
           <Reveal className="lg:col-span-5" delay={120}>
-            <div className="border border-line p-3">
-              <div className="aspect-[4/5] w-full overflow-hidden bg-ink">
-                <Art
-                  seed="about-gwk"
-                  tone="ink"
-                  className="h-full w-full"
-                  label="Abstract plate representing the GWK coastal campus"
-                />
+            <figure className="m-0">
+              <div className="border border-line p-2">
+                <div className="aspect-[4/5] w-full overflow-hidden bg-ink">
+                  <Art
+                    seed="about-coastal-campus"
+                    tone="ink"
+                    className="h-full w-full"
+                    label="Abstract plate representing the Xeeb coastal campus"
+                  />
+                </div>
               </div>
-            </div>
-            <p className="mt-4 max-w-md text-[0.75rem] leading-[1.75] text-gray">
-              {about.note}
-            </p>
+              <figcaption className="mt-4 flex items-start gap-3 text-[0.75rem] leading-[1.75] text-gray">
+                <span
+                  aria-hidden
+                  className="mt-2.5 h-px w-6 shrink-0 bg-line"
+                />
+                <span>{about.note}</span>
+              </figcaption>
+            </figure>
           </Reveal>
         </div>
 

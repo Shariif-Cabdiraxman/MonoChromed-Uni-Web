@@ -60,6 +60,9 @@ const ARCHETYPES = [
   "steps",
   "orbit",
   "field",
+  "contour",
+  "mosaic",
+  "signal",
 ] as const;
 
 type Archetype = (typeof ARCHETYPES)[number];
@@ -268,6 +271,96 @@ function field(r: () => number, p: Pair) {
   return out;
 }
 
+function contour(r: () => number, p: Pair) {
+  const out: React.ReactNode[] = [];
+  const cx = VIEW.w * (0.25 + r() * 0.5);
+  const cy = VIEW.h * (0.25 + r() * 0.5);
+  const rings = 12 + Math.floor(r() * 10);
+  for (let i = 0; i < rings; i += 1) {
+    const rad = 50 + i * (16 + r() * 20);
+    const wobbleAmp = 0.03 + r() * 0.09;
+    const wobbleFreq = 2 + Math.floor(r() * 4);
+    const points: string[] = [];
+    const steps = 72;
+    for (let s = 0; s <= steps; s += 1) {
+      const a = (s / steps) * Math.PI * 2;
+      const wobble = 1 + Math.sin(a * wobbleFreq + i) * wobbleAmp;
+      points.push(
+        `${n(cx + Math.cos(a) * rad * wobble)},${n(
+          cy + Math.sin(a) * rad * wobble * 0.72,
+        )}`,
+      );
+    }
+    out.push(
+      <polyline
+        key={`c${i}`}
+        points={points.join(" ")}
+        fill="none"
+        stroke={wash(i % 3 === 0 ? p.strong : p.soft, 0.1 + r() * 0.42)}
+        strokeWidth={n(1 + r() * 3)}
+      />,
+    );
+  }
+  return out;
+}
+
+function mosaic(r: () => number, p: Pair) {
+  const out: React.ReactNode[] = [];
+  const cols = 6 + Math.floor(r() * 5);
+  const rows = 4 + Math.floor(r() * 4);
+  const cw = VIEW.w / cols;
+  const ch = VIEW.h / rows;
+  for (let x = 0; x < cols; x += 1) {
+    for (let y = 0; y < rows; y += 1) {
+      const v = r();
+      if (v < 0.38) continue;
+      const inset = n(4 + r() * 10);
+      out.push(
+        <rect
+          key={`m${x}-${y}`}
+          x={n(x * cw + inset)}
+          y={n(y * ch + inset)}
+          width={n(cw - inset * 2)}
+          height={n(ch - inset * 2)}
+          fill={wash(v > 0.8 ? p.strong : p.soft, 0.08 + v * 0.68)}
+        />,
+      );
+    }
+  }
+  return out;
+}
+
+function signal(r: () => number, p: Pair) {
+  const out: React.ReactNode[] = [];
+  const count = 18 + Math.floor(r() * 16);
+  const gap = VIEW.w / count;
+  for (let i = 0; i < count; i += 1) {
+    const h = VIEW.h * (0.08 + r() * 0.9);
+    const fill = r() > 0.78 ? p.strong : p.soft;
+    out.push(
+      <rect
+        key={`g${i}`}
+        x={n(i * gap + gap * 0.18)}
+        y={n(VIEW.h - h)}
+        width={n(gap * 0.64)}
+        height={n(h)}
+        fill={wash(fill, 0.1 + r() * 0.62)}
+      />,
+    );
+  }
+  out.push(
+    <rect
+      key="gb"
+      x={0}
+      y={VIEW.h - 2}
+      width={VIEW.w}
+      height={2}
+      fill={wash(p.strong, 0.7)}
+    />,
+  );
+  return out;
+}
+
 const RENDER: Record<
   Archetype,
   (r: () => number, p: Pair) => React.ReactNode[]
@@ -279,6 +372,9 @@ const RENDER: Record<
   steps,
   orbit,
   field,
+  contour,
+  mosaic,
+  signal,
 };
 
 export type ArtProps = {

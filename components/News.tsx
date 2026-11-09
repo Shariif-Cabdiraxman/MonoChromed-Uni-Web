@@ -20,7 +20,7 @@ export function News() {
   const [lead, ...rest] = visible;
 
   const paginate = (delta: number) => {
-    setPage((p) => Math.min(Math.max(p + delta, 0), pages - 1));
+    setPage((p) => (p + delta + pages) % pages);
   };
 
   return (
@@ -41,8 +41,8 @@ export function News() {
               <PairPills
                 onPrev={() => paginate(-1)}
                 onNext={() => paginate(1)}
-                prevDisabled={page === 0}
-                nextDisabled={page >= pages - 1}
+                prevDisabled={pages <= 1}
+                nextDisabled={pages <= 1}
               />
             }
           />
@@ -51,7 +51,7 @@ export function News() {
         <Reveal delay={60}>
           <div
             key={page}
-            className="mt-12 grid gap-10 motion-safe:animate-[fadeUp_.5s_cubic-bezier(.22,1,.36,1)_both] lg:grid-cols-12 lg:gap-12"
+            className="mt-12 grid gap-10 motion-safe:animate-[fadeUp_.5s_cubic-bezier(.22,1,.36,1)_both] lg:grid-cols-12 lg:items-start lg:gap-12"
             aria-live="polite"
           >
             {lead ? (

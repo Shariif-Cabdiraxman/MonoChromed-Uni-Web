@@ -64,7 +64,7 @@ export function SectionHeader({
         <span aria-hidden className="h-px w-8 bg-line" />
         <Eyebrow className="text-ink">{eyebrow}</Eyebrow>
         <span aria-hidden className="ml-auto hidden font-mono text-[0.625rem] tracking-[0.16em] text-gray sm:block">
-          GWK / Index
+          XEEB / Index
         </span>
       </div>
 
@@ -119,7 +119,7 @@ const actionStyles: Record<ActionVariant, string> = {
     "border border-ink text-ink hover:bg-ink hover:text-paper",
   paper:
     "bg-paper text-ink hover:bg-gray hover:text-paper",
-  text: "px-0 py-0 text-ink underline decoration-1 underline-offset-[6px] hover:text-gray",
+  text: "link-underline px-0 py-0 text-ink hover:text-gray",
 };
 
 /**

@@ -1,4 +1,4 @@
-University Monochrome Homepage
+Xeeb University — Monochrome Homepage
 
 [![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=next.js&logoColor=white)](https://nextjs.org)
 [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev)
@@ -210,7 +210,7 @@ npm run smoke      # Terminal 2 → 68/68 passed
 ## Project Structure
 
 ```
-GWK/
+MonoChromed-Uni-Web/
 ├── app/
 │   ├── globals.css        # Design tokens, base layer, reveal + reduced-motion
 │   ├── layout.tsx         # Fonts, metadata, HTML lang
@@ -335,7 +335,7 @@ Copyright (c) 2026 Shariif Abdi.
 
 ## About
 
-**GWK University** is a fictional institution created for this project. All content (copy, data, imagery) is original — no text or visuals sourced from any real university.
+**Xeeb University** is a fictional institution created for this project. All content (copy, data, imagery) is original — no text or visuals sourced from any real university.
 
 Built by **Shariif Abdi** — [@Shariif-Cabdiraxman](https://github.com/Shariif-Cabdiraxman)
 

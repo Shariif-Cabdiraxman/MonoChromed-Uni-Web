@@ -12,6 +12,13 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Static export published into the htdocs folder by `npm run deploy`.
+    "_next/**",
+    "_not-found/**",
+    "index.html",
+    "index.txt",
+    "404.html",
+    "__next.*.txt",
   ]),
 ]);
 
