@@ -81,9 +81,9 @@ for (const c of [
   check(`research tab "${c}"`, html.includes(c));
 }
 
-// 3 hero + 1 about + 1 faculty + 4 research + 4 news + 2 course = 15 plates
+// 1 header + 3 hero + 1 about + 1 faculty + 4 research + 4 news + 2 course = 16
 const plates = (html.match(/viewBox="0 0 1200 800"/g) || []).length;
-check("generated art plates", plates === 15, `${plates} plates`);
+check("generated art plates", plates === 16, `${plates} plates`);
 check("open access badge", html.includes("Open access"));
 check("carousel controls", html.includes("Previous") && html.includes("Next"));
 check("course accordion", html.includes("Undergraduates"));
@@ -102,7 +102,7 @@ check("reveal wrappers", html.includes("data-shown"));
 
 /* ------------------------------------------------------- compiled CSS */
 
-const cssHref = (html.match(/href="(\/_next\/static\/css\/[^"]+\.css)"/) || [])[1];
+const cssHref = (html.match(/href="([^"]*\/_next\/static\/css\/[^"]+\.css)"/) || [])[1];
 check("css bundle linked", !!cssHref, cssHref || "none");
 const css = cssHref ? await (await fetch(BASE + cssHref)).text() : "";
 
@@ -155,7 +155,7 @@ check("alpha derivations only", strayRgb.length === 0, strayRgb.join(" | "));
 
 /* -------------------------------------------------------- compiled JS */
 
-const jsSrcs = [...html.matchAll(/src="(\/_next\/static\/chunks\/[^"]+\.js)"/g)].map(
+const jsSrcs = [...html.matchAll(/src="([^"]*\/_next\/static\/chunks\/[^"]+\.js)"/g)].map(
   (m) => m[1],
 );
 check("js chunks linked", jsSrcs.length > 0, `${jsSrcs.length} chunks`);

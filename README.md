@@ -31,11 +31,12 @@ npm install
 
 # 3. Development
 npm run dev
-# Open http://localhost:3000
+# Open http://localhost:3000/MonoChrome
 
 # 4. Production build + smoke test
 npm run build
 npm run start
+# Serves the static export at http://localhost:3000/MonoChrome
 # In another terminal:
 npm run smoke
 ```
@@ -53,7 +54,7 @@ npm run smoke
 | **Styling** | Tailwind CSS v4, zero-runtime, design tokens in CSS variables |
 | **Typography** | Source Serif 4 (display) + Inter (body) + IBM Plex Mono (labels) via `next/font` |
 | **Palette** | 3 values only — `ink`, `gray`, `paper` — enforced in CI |
-| **Artwork** | 15 deterministic inline SVG plates, seeded by content ID, tone-aware |
+| **Artwork** | 16 deterministic inline SVG plates, seeded by content ID, tone-aware |
 | **Motion** | `IntersectionObserver` scroll reveals, `prefers-reduced-motion` respected |
 | **Hero** | Split editorial hero, 3-slide crossfade carousel, auto-advance (6.5s), pause-on-hover/focus |
 | **Faculties** | 7 master-detail profiles, keyboard-navigable ARIA tabs, generated plates |
@@ -180,7 +181,7 @@ space = {
 - All 6 navigation items
 - 7 faculty names present
 - Category and level tabs with pressed-state wiring
-- 15 generated art plates (`viewBox="0 0 1200 800"`)
+- 16 generated art plates (`viewBox="0 0 1200 800"`)
 - Hero: 3 crossfade layers, carousel controls
 - Course accordion, ARIA wiring
 - Reveal wrappers (`data-shown`)
@@ -230,8 +231,11 @@ MonoChromed-Uni-Web/
 │   ├── tokens.ts          # Palette, fonts, layout, spacing constants
 │   ├── data.ts            # ALL editorial content (slides, faculties, research, news, courses)
 │   └── art.tsx            # Deterministic SVG generator (7 archetypes, mulberry32 PRNG)
+├── scripts/
+│   └── serve.mjs          # Dependency-free preview server for the static export
 ├── smoke.mjs              # 68-check verification suite (DOM + CSS + JS)
-├── next.config.ts         # Pinned to --webpack, output: standalone
+├── next.config.ts         # Pinned to --webpack, static export under /MonoChrome
+├── .github/workflows/ci.yml  # Lint, build and smoke on pushes and PRs
 ├── tsconfig.json          # Strict, types pinned to ["node"]
 ├── eslint.config.mjs      # Next.js core-web-vitals
 ├── postcss.config.mjs     # Tailwind v4 PostCSS plugin
@@ -257,7 +261,7 @@ MonoChromed-Uni-Web/
 |---------|-------------|
 | `npm run dev` | Development server with hot reload (Turbopack disabled, uses `--webpack`) |
 | `npm run build` | Production build (static generation where possible) |
-| `npm run start` | Serve production build on port 3000 |
+| `npm run start` | Serve the static export (`out/`) at http://localhost:3000/MonoChrome via `scripts/serve.mjs` |
 | `npm run lint` | ESLint (Next.js core-web-vitals) |
 | `npm run smoke` | **68 end-to-end checks** against live server (run after `npm run start`) |
 
@@ -315,13 +319,12 @@ PORT=3001 npm run start
 
 ## CI/CD
 
-GitHub Actions (`.github/workflows/ci.yml`) on every push/PR:
-1. `npm ci`
+GitHub Actions (`.github/workflows/ci.yml`) on every push to `main` and every pull request:
+1. `npm ci` (Node 24, npm cache)
 2. `npm run lint`
-3. `npm run build`
-4. `npm run start` (background)
-5. `npm run smoke` (68 checks)
-6. Palette enforcement via smoke test
+3. `npm run build` (static export to `out/`)
+4. `npm run start` (previews `out/` at `/MonoChrome` in the background)
+5. `npm run smoke` (68 checks, including palette enforcement)
 
 ---
 
