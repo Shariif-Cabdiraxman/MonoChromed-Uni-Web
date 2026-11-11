@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, type KeyboardEvent } from "react";
-import { Art } from "@/lib/art";
-import { faculties, facultyNote } from "@/lib/data";
+import { faculties, facultyNote, facultyPhotos } from "@/lib/data";
+import { Photo } from "./Photo";
 import {
   ActionLink,
   ArrowIcon,
@@ -141,11 +141,10 @@ export function Faculties() {
                 className="motion-safe:animate-[fadeUp_.6s_cubic-bezier(.22,1,.36,1)_both]"
               >
                 <div className="relative aspect-[16/10] w-full overflow-hidden border border-line bg-ink">
-                  <Art
-                    seed={`faculty-${faculty.slug}`}
-                    tone="ink"
-                    className="h-full w-full"
-                    label={`${faculty.name} — abstract plate`}
+                  <Photo
+                    slug={facultyPhotos[faculty.slug] ?? "coast"}
+                    alt={`${faculty.name} faculty`}
+                    sizes="(min-width: 1024px) 60vw, 100vw"
                   />
                 </div>
 

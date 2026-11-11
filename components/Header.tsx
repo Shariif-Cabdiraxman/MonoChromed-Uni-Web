@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Art } from "@/lib/art";
+import { campusVisitPhoto } from "@/lib/data";
 import { nav, site } from "@/lib/site";
+import { Photo } from "./Photo";
 import {
   ActionLink,
   ArrowIcon,
@@ -228,12 +229,12 @@ export function Header() {
                 onClick={() => setMega(false)}
                 className="group relative block overflow-hidden border border-line bg-ink lg:col-span-5"
               >
-                <div className="aspect-[16/11] w-full">
-                  <Art
-                    seed="index-campus-visit"
-                    tone="ink"
-                    className="h-full w-full transition-transform duration-700 group-hover:scale-[1.03]"
-                    label="Abstract plate for campus visits"
+                <div className="relative aspect-[16/11] w-full">
+                  <Photo
+                    slug={campusVisitPhoto}
+                    alt="Campus visits at Xeeb University"
+                    sizes="(min-width: 1024px) 40vw, 100vw"
+                    className="transition-transform duration-700 group-hover:scale-[1.03]"
                   />
                 </div>
                 <div

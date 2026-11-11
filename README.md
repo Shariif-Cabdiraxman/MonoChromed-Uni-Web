@@ -5,13 +5,13 @@ Xeeb University — Monochrome Homepage
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Tailwind](https://img.shields.io/badge/Tailwind%20CSS-v4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Smoke Tests](https://img.shields.io/badge/Smoke%20Tests-68%20checks-brightgreen)](#verification)
+[![Smoke Tests](https://img.shields.io/badge/Smoke%20Tests-70%20checks-brightgreen)](#verification)
 [![Palette](https://img.shields.io/badge/Palette-3%20values%20only-111111)](#design-system)
-[![Images](https://img.shields.io/badge/Images-Procedural%20SVG-orange)](#artwork)
+[![Images](https://img.shields.io/badge/Images-Public%20Domain%20%2F%20CC0-orange)](#photography)
 
 ---
 
-A **university homepage** built with **Next.js 16**, **React 19**, **TypeScript**, and **Tailwind CSS v4** — constrained to a **three-value monochrome palette** enforced by automated tests. Every visual element (hero carousel, faculty cards, research plates, news grids) is generated programmatically; there are **zero external images**, no stock photography, and no licensing obligations.
+A **university homepage** built with **Next.js 16**, **React 19**, **TypeScript**, and **Tailwind CSS v4** — constrained to a **three-value monochrome palette** enforced by automated tests. Photography is public-domain/CC0 throughout: the hero, about, faculty, research, news and admissions panels reuse eight grayscale photographs shipped locally, and a dedicated gallery presents them all with full credits.
 
 The design system is not a guideline — it is **code-enforced**. The compiled CSS is scanned at build time: any hue outside `ink` (`#111111`), `gray` (`#888888`), or `paper` (`#FFFFFF`) fails the pipeline. Alpha derivations are permitted only from those three bases.
 
@@ -31,11 +31,12 @@ npm install
 
 # 3. Development
 npm run dev
-# Open http://localhost:3000
+# Open http://localhost:3000/MonoChrome
 
 # 4. Production build + smoke test
 npm run build
 npm run start
+# Serves the static export at http://localhost:3000/MonoChrome
 # In another terminal:
 npm run smoke
 ```
@@ -53,14 +54,14 @@ npm run smoke
 | **Styling** | Tailwind CSS v4, zero-runtime, design tokens in CSS variables |
 | **Typography** | Source Serif 4 (display) + Inter (body) + IBM Plex Mono (labels) via `next/font` |
 | **Palette** | 3 values only — `ink`, `gray`, `paper` — enforced in CI |
-| **Artwork** | 15 deterministic inline SVG plates, seeded by content ID, tone-aware |
+| **Photography** | 8 public-domain/CC0 photos in `public/images/`, grayscale, reused across hero, about, faculties, research, news and admissions |
 | **Motion** | `IntersectionObserver` scroll reveals, `prefers-reduced-motion` respected |
 | **Hero** | Split editorial hero, 3-slide crossfade carousel, auto-advance (6.5s), pause-on-hover/focus |
-| **Faculties** | 7 master-detail profiles, keyboard-navigable ARIA tabs, generated plates |
+| **Faculties** | 7 master-detail profiles, keyboard-navigable ARIA tabs, photographs |
 | **Research** | 12 cards, category filters, deterministic shuffle, pagination, linked badges |
 | **News** | Lead story + compact list, pagination, linked badges |
 | **Course Search** | UG/PG tabs, admissions process, accordion panels, key dates |
-| **Verification** | 68 automated checks (DOM, CSS palette, JS bundle, motion wiring) |
+| **Verification** | 70 automated checks (DOM, CSS palette, JS bundle, motion wiring, gallery) |
 | **Dependencies** | 3 runtime deps only: `next`, `react`, `react-dom` |
 
 ---
@@ -72,7 +73,7 @@ The palette is deliberately restricted to three values — **every other tone is
 | Token | Value | Role |
 |-------|-------|------|
 | `ink` | `#111111` | Headings, body, buttons, rules, borders |
-| `gray` | `#888888` | Secondary text, meta, artwork accents |
+| `gray` | `#888888` | Secondary text, meta, image overlays |
 | `paper` | `#FFFFFF` | All backgrounds |
 
 ```css
@@ -124,8 +125,9 @@ space = {
 │  ui.tsx          → Container, SectionHeader, Tab, Reveal        │
 │  Header.tsx      → Sticky, search sheet, mega dropdown, drawer  │
 │  Hero.tsx        → Split editorial hero, crossfade carousel     │
-│  About.tsx       → Statement, principles, stats, art plate      │
-│  Faculties.tsx   → Master-detail ARIA tabs, generated plates    │
+│  About.tsx       → Statement, principles, stats, photograph     │
+│  Photo.tsx       → Local grayscale photo via next/image         │
+│  Faculties.tsx   → Master-detail ARIA tabs, photographs         │
 │  Research.tsx    → Filters, featured + list, pagination         │
 │  News.tsx        → Lead story + compact list, pagination        │
 │  CourseSearch.tsx→ Admissions tabs, process, accordion, dates   │
@@ -139,20 +141,19 @@ space = {
 │  site.ts         → Brand config (wordmark, name, location)      │
 │  tokens.ts       → Palette, fonts, layout, spacing constants    │
 │  data.ts         → ALL editorial content (slides, faculties,    │
-│                    research, news, courses)                     │
-│  art.tsx         → Deterministic SVG generator (7 archetypes)   │
+│                    research, news, courses, photo mapping)      │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                      Verification                                │
-│  smoke.mjs       → 68 checks against live production build      │
+│  smoke.mjs       → 70 checks against live production build      │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
 **Content-driven architecture** — all editorial content lives in `lib/data.ts`. Change a faculty name, add a research card, update a news date — it propagates everywhere. No hardcoded strings in components.
 
-**Art generation** — `lib/art.tsx` produces deterministic inline SVG from a string seed using a mulberry32 PRNG. Seven archetypes (`strata`, `arc`, `lattice`, `rays`, `steps`, `orbit`, `field`) assigned by hash, with paper/ink tone variants. Each plate is 1200×800, crisp at any size, zero network requests.
+**Photography** — eight public-domain/CC0 images live in `public/images/`. Each was centre-cropped to 3:2, downscaled to 1500×1000, converted to grayscale and saved as a static JPEG. `components/Photo.tsx` renders them through `next/image`; sources and licences are recorded in `public/images/CREDITS.md`.
 
 ---
 
@@ -162,25 +163,27 @@ space = {
 |---------|---------------------------|
 | **Header** | Utility bar + sticky masthead, scroll-triggered border, responsive nav → mobile drawer, search sheet, mega index panel |
 | **Hero** | Split editorial layout, 3 slides, CSS crossfade (`duration-[1100ms]`), auto-advance 6.5s, pause-on-hover/focus, progress ticks, keyboard-navigable prev/next |
-| **About** | Editorial statement, principles, 2×2 stats, tone-aware generated art plate |
-| **Faculties** | 7 master-detail profiles (ARIA `tablist`), keyboard navigation, generated plate, summary + detail |
+| **About** | Editorial statement, principles, 2×2 stats, coastal photograph |
+| **Faculties** | 7 master-detail profiles (ARIA `tablist`), keyboard navigation, photograph, summary + detail |
 | **Research** | Category filters + Random/Date, featured card + compact list, pagination, linked/open-access badges |
 | **News** | Lead story + compact list, pagination, linked badges |
-| **Course Search** | UG/PG tabs, admissions process steps, accordion panels, key dates, art panel |
+| **In Focus** | 8-image public-domain gallery, numbered grayscale grid, credits link |
+| **Course Search** | UG/PG tabs, admissions process steps, accordion panels, key dates, photograph panel |
 | **Footer** | Oversized wordmark, quick links, contact from `site.ts`, social SVG icons |
 
 ---
 
 ## Verification
 
-`npm run smoke` runs **68 assertions** against a live production build (`npm run start`). It validates:
+`npm run smoke` runs **70 assertions** against a live production build (`npm run start`). It validates:
 
 ### DOM
 - Every section heading anchor + text
 - All 6 navigation items
 - 7 faculty names present
 - Category and level tabs with pressed-state wiring
-- 15 generated art plates (`viewBox="0 0 1200 800"`)
+- Photographs across hero, about, faculties, research, news and admissions
+- 8 public-domain gallery photographs (grayscale, local, with credits)
 - Hero: 3 crossfade layers, carousel controls
 - Course accordion, ARIA wiring
 - Reveal wrappers (`data-shown`)
@@ -202,7 +205,7 @@ space = {
 # Run smoke test
 npm run build
 npm run start      # Terminal 1
-npm run smoke      # Terminal 2 → 68/68 passed
+npm run smoke      # Terminal 2 → 70/70 passed
 ```
 
 ---
@@ -219,19 +222,25 @@ MonoChromed-Uni-Web/
 │   ├── ui.tsx             # Shared primitives (Container, SectionHeading, Tab, Reveal)
 │   ├── Header.tsx         # Sticky, search, mega dropdown, drawer
 │   ├── Hero.tsx           # 3-slide crossfade carousel
-│   ├── About.tsx          # Statement, principles, stats, art
-│   ├── Faculties.tsx      # Master-detail tabs, art plates
+│   ├── About.tsx          # Statement, principles, stats, photograph
+│   ├── Photo.tsx          # Local grayscale photo via next/image
+│   ├── Faculties.tsx      # Master-detail tabs, photographs
 │   ├── Research.tsx       # Filters, featured + list, pagination
 │   ├── News.tsx           # Lead story + compact list, pagination
+│   ├── InFocus.tsx        # Public-domain photograph gallery
 │   ├── CourseSearch.tsx   # UG/PG toggle, accordion
 │   └── Footer.tsx         # Quick links, contact, social
 ├── lib/
 │   ├── site.ts            # Brand config (wordmark, name, location, tagline)
 │   ├── tokens.ts          # Palette, fonts, layout, spacing constants
-│   ├── data.ts            # ALL editorial content (slides, faculties, research, news, courses)
-│   └── art.tsx            # Deterministic SVG generator (7 archetypes, mulberry32 PRNG)
-├── smoke.mjs              # 68-check verification suite (DOM + CSS + JS)
-├── next.config.ts         # Pinned to --webpack, output: standalone
+│   └── data.ts            # ALL editorial content + section photo mapping
+├── public/
+│   └── images/            # Public-domain photos, CREDITS.md and manifest.json
+├── scripts/
+│   └── serve.mjs          # Dependency-free preview server for the static export
+├── smoke.mjs              # 70-check verification suite (DOM + CSS + JS)
+├── next.config.ts         # Pinned to --webpack, static export under /MonoChrome
+├── .github/workflows/ci.yml  # Lint, build and smoke on pushes and PRs
 ├── tsconfig.json          # Strict, types pinned to ["node"]
 ├── eslint.config.mjs      # Next.js core-web-vitals
 ├── postcss.config.mjs     # Tailwind v4 PostCSS plugin
@@ -257,9 +266,9 @@ MonoChromed-Uni-Web/
 |---------|-------------|
 | `npm run dev` | Development server with hot reload (Turbopack disabled, uses `--webpack`) |
 | `npm run build` | Production build (static generation where possible) |
-| `npm run start` | Serve production build on port 3000 |
+| `npm run start` | Serve the static export (`out/`) at http://localhost:3000/MonoChrome via `scripts/serve.mjs` |
 | `npm run lint` | ESLint (Next.js core-web-vitals) |
-| `npm run smoke` | **68 end-to-end checks** against live server (run after `npm run start`) |
+| `npm run smoke` | **70 end-to-end checks** against live server (run after `npm run start`) |
 
 ---
 
@@ -297,14 +306,14 @@ PORT=3001 npm run start
 - `aria-expanded`, `aria-controls` on accordion and dropdowns
 - `prefers-reduced-motion` disables all animations (CSS + JS)
 - Focus-visible outlines on all interactive elements
-- `lang="en"` on `<html>`, descriptive `alt`/`aria-label` on generated art
+- `lang="en"` on `<html>`, descriptive `alt` on photographs and `aria-label` on controls
 - Color contrast: ink-on-paper (21:1), gray-on-paper (7.3:1) — both AAA
 
 ---
 
 ## Performance
 
-- **Zero external images** — all artwork inline SVG (server-rendered)
+- **Local imagery only** — 8 optimised grayscale JPEGs reused across every section; no third-party requests
 - **3 runtime dependencies** — `next`, `react`, `react-dom` (~150 KB gzipped total)
 - **Static generation** — entire page pre-rendered at build time
 - **Font optimization** — `next/font` self-hosts Source Serif 4 + Inter with `display: swap`
@@ -315,13 +324,12 @@ PORT=3001 npm run start
 
 ## CI/CD
 
-GitHub Actions (`.github/workflows/ci.yml`) on every push/PR:
-1. `npm ci`
+GitHub Actions (`.github/workflows/ci.yml`) on every push to `main` and every pull request:
+1. `npm ci` (Node 24, npm cache)
 2. `npm run lint`
-3. `npm run build`
-4. `npm run start` (background)
-5. `npm run smoke` (68 checks)
-6. Palette enforcement via smoke test
+3. `npm run build` (static export to `out/`)
+4. `npm run start` (previews `out/` at `/MonoChrome` in the background)
+5. `npm run smoke` (70 checks, including palette enforcement)
 
 ---
 

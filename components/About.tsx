@@ -1,8 +1,8 @@
 "use client";
 
-import { Art } from "@/lib/art";
-import { about } from "@/lib/data";
+import { about, aboutPhoto } from "@/lib/data";
 import { site } from "@/lib/site";
+import { Photo } from "./Photo";
 import { ActionLink, Container, Reveal, SectionHeader } from "./ui";
 
 export function About() {
@@ -60,12 +60,11 @@ export function About() {
           <Reveal className="lg:col-span-5" delay={120}>
             <figure className="m-0">
               <div className="border border-line p-2">
-                <div className="aspect-[4/5] w-full overflow-hidden bg-ink">
-                  <Art
-                    seed="about-coastal-campus"
-                    tone="ink"
-                    className="h-full w-full"
-                    label="Abstract plate representing the Xeeb coastal campus"
+                <div className="relative aspect-[4/5] w-full overflow-hidden bg-ink">
+                  <Photo
+                    slug={aboutPhoto}
+                    alt="The Xeeb University coastal campus"
+                    sizes="(min-width: 1024px) 36vw, 100vw"
                   />
                 </div>
               </div>

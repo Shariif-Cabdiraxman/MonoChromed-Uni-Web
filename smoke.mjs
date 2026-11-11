@@ -81,9 +81,9 @@ for (const c of [
   check(`research tab "${c}"`, html.includes(c));
 }
 
-// 3 hero + 1 about + 1 faculty + 4 research + 4 news + 2 course = 15 plates
-const plates = (html.match(/viewBox="0 0 1200 800"/g) || []).length;
-check("generated art plates", plates === 15, `${plates} plates`);
+// 1 header + 3 hero + 1 about + 1 faculty + 4 research + 4 news + 2 course = 16
+const photos = (html.match(/<img[^>]+src="\/MonoChrome\/images\/[a-z-]+\.jpg"/g) || []).length;
+check("photographs across sections", photos >= 20, `${photos} photos`);
 check("open access badge", html.includes("Open access"));
 check("carousel controls", html.includes("Previous") && html.includes("Next"));
 check("course accordion", html.includes("Undergraduates"));
@@ -94,6 +94,9 @@ check("admissions key dates", html.includes("Applications open"));
 check("site index panel", html.includes('id="site-index"'));
 check("search field", html.includes('id="site-search"'));
 check("section index rail", html.includes("XEEB / Index"));
+check("in-focus gallery", html.includes('id="in-focus"'));
+const galleryImages = new Set(html.match(/\/images\/[a-z-]+\.jpg/g) || []);
+check("public-domain gallery photos", galleryImages.size === 8, `${galleryImages.size} images`);
 check("closing CTA", html.includes("Your next chapter"));
 check("skip link", html.includes("Skip to content"));
 check("footer quick links", html.includes("Quick Links"));
@@ -102,7 +105,7 @@ check("reveal wrappers", html.includes("data-shown"));
 
 /* ------------------------------------------------------- compiled CSS */
 
-const cssHref = (html.match(/href="(\/_next\/static\/css\/[^"]+\.css)"/) || [])[1];
+const cssHref = (html.match(/href="([^"]*\/_next\/static\/css\/[^"]+\.css)"/) || [])[1];
 check("css bundle linked", !!cssHref, cssHref || "none");
 const css = cssHref ? await (await fetch(BASE + cssHref)).text() : "";
 
@@ -155,7 +158,7 @@ check("alpha derivations only", strayRgb.length === 0, strayRgb.join(" | "));
 
 /* -------------------------------------------------------- compiled JS */
 
-const jsSrcs = [...html.matchAll(/src="(\/_next\/static\/chunks\/[^"]+\.js)"/g)].map(
+const jsSrcs = [...html.matchAll(/src="([^"]*\/_next\/static\/chunks\/[^"]+\.js)"/g)].map(
   (m) => m[1],
 );
 check("js chunks linked", jsSrcs.length > 0, `${jsSrcs.length} chunks`);

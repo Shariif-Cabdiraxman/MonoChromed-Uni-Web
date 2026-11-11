@@ -1,0 +1,82 @@
+﻿[
+    {
+        "Slug":  "coast",
+        "Caption":  "The Port Adaar shoreline, surveyed each term",
+        "Title":  "File:Aerial view of a peaceful coastline with clear blue waters.jpg",
+        "License":  "CC0",
+        "Artist":  "Torivah26",
+        "Source":  "https://commons.wikimedia.org/wiki/File:Aerial_view_of_a_peaceful_coastline_with_clear_blue_waters.jpg",
+        "File":  "coast.jpg",
+        "Bytes":  345079
+    },
+    {
+        "Slug":  "marine",
+        "Caption":  "Coral survey work on the northern reefs",
+        "Title":  "File:Bleached brain corals staghorn corals Sombrero Key Reef summer 2023.png",
+        "License":  "Public domain",
+        "Artist":  "Ananda Ellis/NOAA",
+        "Source":  "https://commons.wikimedia.org/wiki/File:Bleached_brain_corals_staghorn_corals_Sombrero_Key_Reef_summer_2023.png",
+        "File":  "marine.jpg",
+        "Bytes":  235043
+    },
+    {
+        "Slug":  "energy",
+        "Caption":  "The micro-grid and turbine test site",
+        "Title":  "File:Power County Wind Farm 002.jpg",
+        "License":  "Public domain",
+        "Artist":  "ENERGY.GOV",
+        "Source":  "https://commons.wikimedia.org/wiki/File:Power_County_Wind_Farm_002.jpg",
+        "File":  "energy.jpg",
+        "Bytes":  232200
+    },
+    {
+        "Slug":  "ai",
+        "Caption":  "The shared computing and data laboratory",
+        "Title":  "File:Aurora environment 1600x900.jpg",
+        "License":  "Public domain",
+        "Artist":  "Argonne National Laboratory",
+        "Source":  "https://commons.wikimedia.org/wiki/File:Aurora_environment_1600x900.jpg",
+        "File":  "ai.jpg",
+        "Bytes":  116431
+    },
+    {
+        "Slug":  "health",
+        "Caption":  "Community health teaching and placement",
+        "Title":  "File:CDC worker in the maximum containment virology laboratory.jpg",
+        "License":  "Public domain",
+        "Artist":  "Unknown photographer, Centers for Disease Control",
+        "Source":  "https://commons.wikimedia.org/wiki/File:CDC_worker_in_the_maximum_containment_virology_laboratory.jpg",
+        "File":  "health.jpg",
+        "Bytes":  199201
+    },
+    {
+        "Slug":  "urban",
+        "Caption":  "District planning and field survey studio",
+        "Title":  "File:Aerial photograph of Foster City, CA.jpg",
+        "License":  "CC0",
+        "Artist":  "Mertbiol",
+        "Source":  "https://commons.wikimedia.org/wiki/File:Aerial_photograph_of_Foster_City,_CA.jpg",
+        "File":  "urban.jpg",
+        "Bytes":  447156
+    },
+    {
+        "Slug":  "finance",
+        "Caption":  "Market data and economics workshop",
+        "Title":  "File:Buildings in Financial District, Manhattan.jpg",
+        "License":  "CC0",
+        "Artist":  "Julian Lupyan",
+        "Source":  "https://commons.wikimedia.org/wiki/File:Buildings_in_Financial_District,_Manhattan.jpg",
+        "File":  "finance.jpg",
+        "Bytes":  232593
+    },
+    {
+        "Slug":  "education",
+        "Caption":  "Teaching spaces across the campus",
+        "Title":  "File:LaRSS lecture by Joel Levine 01.jpg",
+        "License":  "Public domain",
+        "Artist":  "NASA",
+        "Source":  "https://commons.wikimedia.org/wiki/File:LaRSS_lecture_by_Joel_Levine_01.jpg",
+        "File":  "education.jpg",
+        "Bytes":  196014
+    }
+]
