@@ -5,13 +5,13 @@ Xeeb University — Monochrome Homepage
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Tailwind](https://img.shields.io/badge/Tailwind%20CSS-v4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Smoke Tests](https://img.shields.io/badge/Smoke%20Tests-68%20checks-brightgreen)](#verification)
+[![Smoke Tests](https://img.shields.io/badge/Smoke%20Tests-70%20checks-brightgreen)](#verification)
 [![Palette](https://img.shields.io/badge/Palette-3%20values%20only-111111)](#design-system)
 [![Images](https://img.shields.io/badge/Images-Procedural%20SVG-orange)](#artwork)
 
 ---
 
-A **university homepage** built with **Next.js 16**, **React 19**, **TypeScript**, and **Tailwind CSS v4** — constrained to a **three-value monochrome palette** enforced by automated tests. Every visual element (hero carousel, faculty cards, research plates, news grids) is generated programmatically; there are **zero external images**, no stock photography, and no licensing obligations.
+A **university homepage** built with **Next.js 16**, **React 19**, **TypeScript**, and **Tailwind CSS v4** — constrained to a **three-value monochrome palette** enforced by automated tests. Most visual elements (hero carousel, faculty cards, research plates, news grids) are generated programmatically; a separate gallery uses public-domain/CC0 photography, converted to grayscale and shipped locally with full credits.
 
 The design system is not a guideline — it is **code-enforced**. The compiled CSS is scanned at build time: any hue outside `ink` (`#111111`), `gray` (`#888888`), or `paper` (`#FFFFFF`) fails the pipeline. Alpha derivations are permitted only from those three bases.
 
@@ -55,13 +55,14 @@ npm run smoke
 | **Typography** | Source Serif 4 (display) + Inter (body) + IBM Plex Mono (labels) via `next/font` |
 | **Palette** | 3 values only — `ink`, `gray`, `paper` — enforced in CI |
 | **Artwork** | 16 deterministic inline SVG plates, seeded by content ID, tone-aware |
+| **Photography** | 8 public-domain/CC0 photos in `public/images/`, cropped to grayscale, credits included |
 | **Motion** | `IntersectionObserver` scroll reveals, `prefers-reduced-motion` respected |
 | **Hero** | Split editorial hero, 3-slide crossfade carousel, auto-advance (6.5s), pause-on-hover/focus |
 | **Faculties** | 7 master-detail profiles, keyboard-navigable ARIA tabs, generated plates |
 | **Research** | 12 cards, category filters, deterministic shuffle, pagination, linked badges |
 | **News** | Lead story + compact list, pagination, linked badges |
 | **Course Search** | UG/PG tabs, admissions process, accordion panels, key dates |
-| **Verification** | 68 automated checks (DOM, CSS palette, JS bundle, motion wiring) |
+| **Verification** | 70 automated checks (DOM, CSS palette, JS bundle, motion wiring, gallery) |
 | **Dependencies** | 3 runtime deps only: `next`, `react`, `react-dom` |
 
 ---
@@ -147,7 +148,7 @@ space = {
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                      Verification                                │
-│  smoke.mjs       → 68 checks against live production build      │
+│  smoke.mjs       → 70 checks against live production build      │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -167,6 +168,7 @@ space = {
 | **Faculties** | 7 master-detail profiles (ARIA `tablist`), keyboard navigation, generated plate, summary + detail |
 | **Research** | Category filters + Random/Date, featured card + compact list, pagination, linked/open-access badges |
 | **News** | Lead story + compact list, pagination, linked badges |
+| **In Focus** | 8-image public-domain gallery, numbered grayscale grid, credits link |
 | **Course Search** | UG/PG tabs, admissions process steps, accordion panels, key dates, art panel |
 | **Footer** | Oversized wordmark, quick links, contact from `site.ts`, social SVG icons |
 
@@ -174,7 +176,7 @@ space = {
 
 ## Verification
 
-`npm run smoke` runs **68 assertions** against a live production build (`npm run start`). It validates:
+`npm run smoke` runs **70 assertions** against a live production build (`npm run start`). It validates:
 
 ### DOM
 - Every section heading anchor + text
@@ -182,6 +184,7 @@ space = {
 - 7 faculty names present
 - Category and level tabs with pressed-state wiring
 - 16 generated art plates (`viewBox="0 0 1200 800"`)
+- 8 public-domain gallery photographs (grayscale, local, with credits)
 - Hero: 3 crossfade layers, carousel controls
 - Course accordion, ARIA wiring
 - Reveal wrappers (`data-shown`)
@@ -203,7 +206,7 @@ space = {
 # Run smoke test
 npm run build
 npm run start      # Terminal 1
-npm run smoke      # Terminal 2 → 68/68 passed
+npm run smoke      # Terminal 2 → 70/70 passed
 ```
 
 ---
@@ -224,6 +227,7 @@ MonoChromed-Uni-Web/
 │   ├── Faculties.tsx      # Master-detail tabs, art plates
 │   ├── Research.tsx       # Filters, featured + list, pagination
 │   ├── News.tsx           # Lead story + compact list, pagination
+│   ├── InFocus.tsx        # Public-domain photograph gallery
 │   ├── CourseSearch.tsx   # UG/PG toggle, accordion
 │   └── Footer.tsx         # Quick links, contact, social
 ├── lib/
@@ -231,9 +235,11 @@ MonoChromed-Uni-Web/
 │   ├── tokens.ts          # Palette, fonts, layout, spacing constants
 │   ├── data.ts            # ALL editorial content (slides, faculties, research, news, courses)
 │   └── art.tsx            # Deterministic SVG generator (7 archetypes, mulberry32 PRNG)
+├── public/
+│   └── images/            # Public-domain photos, CREDITS.md and manifest.json
 ├── scripts/
 │   └── serve.mjs          # Dependency-free preview server for the static export
-├── smoke.mjs              # 68-check verification suite (DOM + CSS + JS)
+├── smoke.mjs              # 70-check verification suite (DOM + CSS + JS)
 ├── next.config.ts         # Pinned to --webpack, static export under /MonoChrome
 ├── .github/workflows/ci.yml  # Lint, build and smoke on pushes and PRs
 ├── tsconfig.json          # Strict, types pinned to ["node"]
@@ -263,7 +269,7 @@ MonoChromed-Uni-Web/
 | `npm run build` | Production build (static generation where possible) |
 | `npm run start` | Serve the static export (`out/`) at http://localhost:3000/MonoChrome via `scripts/serve.mjs` |
 | `npm run lint` | ESLint (Next.js core-web-vitals) |
-| `npm run smoke` | **68 end-to-end checks** against live server (run after `npm run start`) |
+| `npm run smoke` | **70 end-to-end checks** against live server (run after `npm run start`) |
 
 ---
 
@@ -308,7 +314,7 @@ PORT=3001 npm run start
 
 ## Performance
 
-- **Zero external images** — all artwork inline SVG (server-rendered)
+- **Local imagery only** — generated SVG plates plus 8 optimised grayscale JPEGs; no third-party requests
 - **3 runtime dependencies** — `next`, `react`, `react-dom` (~150 KB gzipped total)
 - **Static generation** — entire page pre-rendered at build time
 - **Font optimization** — `next/font` self-hosts Source Serif 4 + Inter with `display: swap`
@@ -324,7 +330,7 @@ GitHub Actions (`.github/workflows/ci.yml`) on every push to `main` and every pu
 2. `npm run lint`
 3. `npm run build` (static export to `out/`)
 4. `npm run start` (previews `out/` at `/MonoChrome` in the background)
-5. `npm run smoke` (68 checks, including palette enforcement)
+5. `npm run smoke` (70 checks, including palette enforcement)
 
 ---
 

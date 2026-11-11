@@ -375,3 +375,67 @@ export const courseSearch = {
     },
   ],
 } as const;
+
+/* --------------------------------------------------------- in focus */
+
+export type CampusPhoto = {
+  slug: string;
+  topic: string;
+  caption: string;
+  credit: string;
+};
+
+/**
+ * Public-domain / CC0 photography, cropped and converted to grayscale at
+ * import time. Sources and licences are recorded in public/images/CREDITS.md.
+ */
+export const campusPhotos: CampusPhoto[] = [
+  {
+    slug: "coast",
+    topic: "Marine & Coastal Sciences",
+    caption: "The Port Adaar shoreline, surveyed each term.",
+    credit: "CC0 / Torivah26",
+  },
+  {
+    slug: "marine",
+    topic: "Fieldwork",
+    caption: "Coral survey work on the northern reefs.",
+    credit: "Public domain / NOAA",
+  },
+  {
+    slug: "energy",
+    topic: "Renewable Energy",
+    caption: "The micro-grid and turbine test site.",
+    credit: "Public domain / U.S. DOE",
+  },
+  {
+    slug: "ai",
+    topic: "Computing",
+    caption: "The shared computing and data laboratory.",
+    credit: "Public domain / Argonne National Laboratory",
+  },
+  {
+    slug: "health",
+    topic: "Global Health",
+    caption: "Community health teaching and placement.",
+    credit: "Public domain / CDC",
+  },
+  {
+    slug: "urban",
+    topic: "Urban Planning",
+    caption: "District planning and field survey studio.",
+    credit: "CC0 / Mertbiol",
+  },
+  {
+    slug: "finance",
+    topic: "Finance & Economy",
+    caption: "Market data and economics workshop.",
+    credit: "CC0 / Julian Lupyan",
+  },
+  {
+    slug: "education",
+    topic: "Education",
+    caption: "Teaching spaces across the campus.",
+    credit: "Public domain / NASA",
+  },
+];

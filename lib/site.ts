@@ -17,6 +17,9 @@ export const site = {
   phone: "+00 000 000 0000",
 } as const;
 
+/** Public base path configured in next.config.ts. */
+export const basePath = "/MonoChrome";
+
 export const nav = [
   {
     label: "Admissions",

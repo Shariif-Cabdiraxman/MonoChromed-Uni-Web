@@ -5,6 +5,7 @@ import { Faculties } from "@/components/Faculties";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
+import { InFocus } from "@/components/InFocus";
 import { News } from "@/components/News";
 import { Research } from "@/components/Research";
 import { ScrollProgress } from "@/components/ScrollProgress";
@@ -20,6 +21,7 @@ export default function Home() {
         <Faculties />
         <Research />
         <News />
+        <InFocus />
         <CourseSearch />
         <ClosingCta />
       </main>

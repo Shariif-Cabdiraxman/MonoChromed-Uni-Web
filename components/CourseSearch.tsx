@@ -41,7 +41,7 @@ export function CourseSearch() {
       <Container>
         <Reveal>
           <SectionHeader
-            index="05"
+            index="06"
             eyebrow={courseSearch.eyebrow}
             title={courseSearch.heading}
             id="course-h"
