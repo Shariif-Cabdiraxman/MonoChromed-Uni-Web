@@ -7,11 +7,11 @@ Xeeb University — Monochrome Homepage
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Smoke Tests](https://img.shields.io/badge/Smoke%20Tests-70%20checks-brightgreen)](#verification)
 [![Palette](https://img.shields.io/badge/Palette-3%20values%20only-111111)](#design-system)
-[![Images](https://img.shields.io/badge/Images-Procedural%20SVG-orange)](#artwork)
+[![Images](https://img.shields.io/badge/Images-Public%20Domain%20%2F%20CC0-orange)](#photography)
 
 ---
 
-A **university homepage** built with **Next.js 16**, **React 19**, **TypeScript**, and **Tailwind CSS v4** — constrained to a **three-value monochrome palette** enforced by automated tests. Most visual elements (hero carousel, faculty cards, research plates, news grids) are generated programmatically; a separate gallery uses public-domain/CC0 photography, converted to grayscale and shipped locally with full credits.
+A **university homepage** built with **Next.js 16**, **React 19**, **TypeScript**, and **Tailwind CSS v4** — constrained to a **three-value monochrome palette** enforced by automated tests. Photography is public-domain/CC0 throughout: the hero, about, faculty, research, news and admissions panels reuse eight grayscale photographs shipped locally, and a dedicated gallery presents them all with full credits.
 
 The design system is not a guideline — it is **code-enforced**. The compiled CSS is scanned at build time: any hue outside `ink` (`#111111`), `gray` (`#888888`), or `paper` (`#FFFFFF`) fails the pipeline. Alpha derivations are permitted only from those three bases.
 
@@ -54,11 +54,10 @@ npm run smoke
 | **Styling** | Tailwind CSS v4, zero-runtime, design tokens in CSS variables |
 | **Typography** | Source Serif 4 (display) + Inter (body) + IBM Plex Mono (labels) via `next/font` |
 | **Palette** | 3 values only — `ink`, `gray`, `paper` — enforced in CI |
-| **Artwork** | 16 deterministic inline SVG plates, seeded by content ID, tone-aware |
-| **Photography** | 8 public-domain/CC0 photos in `public/images/`, cropped to grayscale, credits included |
+| **Photography** | 8 public-domain/CC0 photos in `public/images/`, grayscale, reused across hero, about, faculties, research, news and admissions |
 | **Motion** | `IntersectionObserver` scroll reveals, `prefers-reduced-motion` respected |
 | **Hero** | Split editorial hero, 3-slide crossfade carousel, auto-advance (6.5s), pause-on-hover/focus |
-| **Faculties** | 7 master-detail profiles, keyboard-navigable ARIA tabs, generated plates |
+| **Faculties** | 7 master-detail profiles, keyboard-navigable ARIA tabs, photographs |
 | **Research** | 12 cards, category filters, deterministic shuffle, pagination, linked badges |
 | **News** | Lead story + compact list, pagination, linked badges |
 | **Course Search** | UG/PG tabs, admissions process, accordion panels, key dates |
@@ -74,7 +73,7 @@ The palette is deliberately restricted to three values — **every other tone is
 | Token | Value | Role |
 |-------|-------|------|
 | `ink` | `#111111` | Headings, body, buttons, rules, borders |
-| `gray` | `#888888` | Secondary text, meta, artwork accents |
+| `gray` | `#888888` | Secondary text, meta, image overlays |
 | `paper` | `#FFFFFF` | All backgrounds |
 
 ```css
@@ -126,8 +125,9 @@ space = {
 │  ui.tsx          → Container, SectionHeader, Tab, Reveal        │
 │  Header.tsx      → Sticky, search sheet, mega dropdown, drawer  │
 │  Hero.tsx        → Split editorial hero, crossfade carousel     │
-│  About.tsx       → Statement, principles, stats, art plate      │
-│  Faculties.tsx   → Master-detail ARIA tabs, generated plates    │
+│  About.tsx       → Statement, principles, stats, photograph     │
+│  Photo.tsx       → Local grayscale photo via next/image         │
+│  Faculties.tsx   → Master-detail ARIA tabs, photographs         │
 │  Research.tsx    → Filters, featured + list, pagination         │
 │  News.tsx        → Lead story + compact list, pagination        │
 │  CourseSearch.tsx→ Admissions tabs, process, accordion, dates   │
@@ -141,8 +141,7 @@ space = {
 │  site.ts         → Brand config (wordmark, name, location)      │
 │  tokens.ts       → Palette, fonts, layout, spacing constants    │
 │  data.ts         → ALL editorial content (slides, faculties,    │
-│                    research, news, courses)                     │
-│  art.tsx         → Deterministic SVG generator (7 archetypes)   │
+│                    research, news, courses, photo mapping)      │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
@@ -154,7 +153,7 @@ space = {
 
 **Content-driven architecture** — all editorial content lives in `lib/data.ts`. Change a faculty name, add a research card, update a news date — it propagates everywhere. No hardcoded strings in components.
 
-**Art generation** — `lib/art.tsx` produces deterministic inline SVG from a string seed using a mulberry32 PRNG. Seven archetypes (`strata`, `arc`, `lattice`, `rays`, `steps`, `orbit`, `field`) assigned by hash, with paper/ink tone variants. Each plate is 1200×800, crisp at any size, zero network requests.
+**Photography** — eight public-domain/CC0 images live in `public/images/`. Each was centre-cropped to 3:2, downscaled to 1500×1000, converted to grayscale and saved as a static JPEG. `components/Photo.tsx` renders them through `next/image`; sources and licences are recorded in `public/images/CREDITS.md`.
 
 ---
 
@@ -164,12 +163,12 @@ space = {
 |---------|---------------------------|
 | **Header** | Utility bar + sticky masthead, scroll-triggered border, responsive nav → mobile drawer, search sheet, mega index panel |
 | **Hero** | Split editorial layout, 3 slides, CSS crossfade (`duration-[1100ms]`), auto-advance 6.5s, pause-on-hover/focus, progress ticks, keyboard-navigable prev/next |
-| **About** | Editorial statement, principles, 2×2 stats, tone-aware generated art plate |
-| **Faculties** | 7 master-detail profiles (ARIA `tablist`), keyboard navigation, generated plate, summary + detail |
+| **About** | Editorial statement, principles, 2×2 stats, coastal photograph |
+| **Faculties** | 7 master-detail profiles (ARIA `tablist`), keyboard navigation, photograph, summary + detail |
 | **Research** | Category filters + Random/Date, featured card + compact list, pagination, linked/open-access badges |
 | **News** | Lead story + compact list, pagination, linked badges |
 | **In Focus** | 8-image public-domain gallery, numbered grayscale grid, credits link |
-| **Course Search** | UG/PG tabs, admissions process steps, accordion panels, key dates, art panel |
+| **Course Search** | UG/PG tabs, admissions process steps, accordion panels, key dates, photograph panel |
 | **Footer** | Oversized wordmark, quick links, contact from `site.ts`, social SVG icons |
 
 ---
@@ -183,7 +182,7 @@ space = {
 - All 6 navigation items
 - 7 faculty names present
 - Category and level tabs with pressed-state wiring
-- 16 generated art plates (`viewBox="0 0 1200 800"`)
+- Photographs across hero, about, faculties, research, news and admissions
 - 8 public-domain gallery photographs (grayscale, local, with credits)
 - Hero: 3 crossfade layers, carousel controls
 - Course accordion, ARIA wiring
@@ -223,8 +222,9 @@ MonoChromed-Uni-Web/
 │   ├── ui.tsx             # Shared primitives (Container, SectionHeading, Tab, Reveal)
 │   ├── Header.tsx         # Sticky, search, mega dropdown, drawer
 │   ├── Hero.tsx           # 3-slide crossfade carousel
-│   ├── About.tsx          # Statement, principles, stats, art
-│   ├── Faculties.tsx      # Master-detail tabs, art plates
+│   ├── About.tsx          # Statement, principles, stats, photograph
+│   ├── Photo.tsx          # Local grayscale photo via next/image
+│   ├── Faculties.tsx      # Master-detail tabs, photographs
 │   ├── Research.tsx       # Filters, featured + list, pagination
 │   ├── News.tsx           # Lead story + compact list, pagination
 │   ├── InFocus.tsx        # Public-domain photograph gallery
@@ -233,8 +233,7 @@ MonoChromed-Uni-Web/
 ├── lib/
 │   ├── site.ts            # Brand config (wordmark, name, location, tagline)
 │   ├── tokens.ts          # Palette, fonts, layout, spacing constants
-│   ├── data.ts            # ALL editorial content (slides, faculties, research, news, courses)
-│   └── art.tsx            # Deterministic SVG generator (7 archetypes, mulberry32 PRNG)
+│   └── data.ts            # ALL editorial content + section photo mapping
 ├── public/
 │   └── images/            # Public-domain photos, CREDITS.md and manifest.json
 ├── scripts/
@@ -307,14 +306,14 @@ PORT=3001 npm run start
 - `aria-expanded`, `aria-controls` on accordion and dropdowns
 - `prefers-reduced-motion` disables all animations (CSS + JS)
 - Focus-visible outlines on all interactive elements
-- `lang="en"` on `<html>`, descriptive `alt`/`aria-label` on generated art
+- `lang="en"` on `<html>`, descriptive `alt` on photographs and `aria-label` on controls
 - Color contrast: ink-on-paper (21:1), gray-on-paper (7.3:1) — both AAA
 
 ---
 
 ## Performance
 
-- **Local imagery only** — generated SVG plates plus 8 optimised grayscale JPEGs; no third-party requests
+- **Local imagery only** — 8 optimised grayscale JPEGs reused across every section; no third-party requests
 - **3 runtime dependencies** — `next`, `react`, `react-dom` (~150 KB gzipped total)
 - **Static generation** — entire page pre-rendered at build time
 - **Font optimization** — `next/font` self-hosts Source Serif 4 + Inter with `display: swap`

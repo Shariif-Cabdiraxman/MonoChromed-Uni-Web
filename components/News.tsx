@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Art } from "@/lib/art";
-import { newsCards } from "@/lib/data";
+import { newsCards, newsPhotos } from "@/lib/data";
+import { Photo } from "./Photo";
 import {
   ActionLink,
   Container,
@@ -56,12 +56,12 @@ export function News() {
           >
             {lead ? (
               <article className="group lg:col-span-7">
-                <div className="aspect-[16/10] w-full overflow-hidden border border-line bg-ink">
-                  <Art
-                    seed={`news-${lead.id}`}
-                    tone="ink"
-                    className="h-full w-full transition-transform duration-700 group-hover:scale-[1.02]"
-                    label={`Abstract plate for ${lead.title}`}
+                <div className="relative aspect-[16/10] w-full overflow-hidden border border-line bg-ink">
+                  <Photo
+                    slug={newsPhotos[lead.id] ?? "coast"}
+                    alt={lead.title}
+                    sizes="(min-width: 1024px) 58vw, 100vw"
+                    className="transition-transform duration-700 group-hover:scale-[1.02]"
                   />
                 </div>
 
@@ -98,12 +98,12 @@ export function News() {
                   key={card.id}
                   className="group flex gap-5 border-t border-line py-6 first:border-t-0 first:pt-0"
                 >
-                  <div className="aspect-square w-24 shrink-0 overflow-hidden border border-line bg-ink sm:w-28">
-                    <Art
-                      seed={`news-${card.id}`}
-                      tone="ink"
-                      className="h-full w-full transition-transform duration-700 group-hover:scale-[1.03]"
-                      label={`Abstract plate for ${card.title}`}
+                  <div className="relative aspect-square w-24 shrink-0 overflow-hidden border border-line bg-ink sm:w-28">
+                    <Photo
+                      slug={newsPhotos[card.id] ?? "coast"}
+                      alt={card.title}
+                      sizes="112px"
+                      className="transition-transform duration-700 group-hover:scale-[1.03]"
                     />
                   </div>
 

@@ -1,8 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Art } from "@/lib/art";
-import { researchCards, researchCategories } from "@/lib/data";
+import { researchCards, researchCategories, researchPhotos } from "@/lib/data";
+import { Photo } from "./Photo";
 import {
   ActionLink,
   Container,
@@ -107,12 +107,12 @@ export function Research() {
           >
             {lead ? (
               <article className="group lg:col-span-6">
-                <div className="aspect-[16/11] w-full overflow-hidden border border-line bg-ink">
-                  <Art
-                    seed={`research-${lead.id}`}
-                    tone="ink"
-                    className="h-full w-full transition-transform duration-700 group-hover:scale-[1.02]"
-                    label={`Abstract plate for ${lead.title}`}
+                <div className="relative aspect-[16/11] w-full overflow-hidden border border-line bg-ink">
+                  <Photo
+                    slug={researchPhotos[lead.category] ?? "coast"}
+                    alt={lead.title}
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    className="transition-transform duration-700 group-hover:scale-[1.02]"
                   />
                 </div>
 
@@ -154,12 +154,12 @@ export function Research() {
                   key={card.id}
                   className="group flex gap-5 border-t border-line py-6 first:border-t-0 first:pt-0"
                 >
-                  <div className="aspect-square w-24 shrink-0 overflow-hidden border border-line bg-ink sm:w-32">
-                    <Art
-                      seed={`research-${card.id}`}
-                      tone="ink"
-                      className="h-full w-full transition-transform duration-700 group-hover:scale-[1.03]"
-                      label={`Abstract plate for ${card.title}`}
+                  <div className="relative aspect-square w-24 shrink-0 overflow-hidden border border-line bg-ink sm:w-32">
+                    <Photo
+                      slug={researchPhotos[card.category] ?? "coast"}
+                      alt={card.title}
+                      sizes="128px"
+                      className="transition-transform duration-700 group-hover:scale-[1.03]"
                     />
                   </div>
 

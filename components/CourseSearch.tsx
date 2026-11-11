@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Art } from "@/lib/art";
-import { courseSearch } from "@/lib/data";
+import { coursePhotos, courseSearch } from "@/lib/data";
+import { Photo } from "./Photo";
 import {
   ActionLink,
   ArrowIcon,
@@ -169,13 +169,10 @@ export function CourseSearch() {
                     ].join(" ")}
                     aria-hidden={i !== activeIndex}
                   >
-                    <Art
-                      seed={`course-${t.id}`}
-                      tone="ink"
-                      className="h-full w-full"
-                      label={
-                        i === activeIndex ? `${t.label} programmes` : undefined
-                      }
+                    <Photo
+                      slug={coursePhotos[t.id] ?? "education"}
+                      alt={`${t.label} programmes`}
+                      sizes="(min-width: 1024px) 40vw, 100vw"
                     />
                   </div>
                 ))}

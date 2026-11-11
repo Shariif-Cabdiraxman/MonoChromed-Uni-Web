@@ -1,8 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Art } from "@/lib/art";
-import { slides } from "@/lib/data";
+import { slidePhotos, slides } from "@/lib/data";
+import { Photo } from "./Photo";
 import { ActionLink, ArrowIcon, Container, Eyebrow } from "./ui";
 
 const INTERVAL = 6500;
@@ -146,11 +146,11 @@ export function Hero() {
                 ].join(" ")}
                 aria-hidden={i !== index}
               >
-                <Art
-                  seed={s.id}
-                  tone="ink"
-                  className="h-full w-full"
-                  label={i === index ? s.headline : undefined}
+                <Photo
+                  slug={slidePhotos[s.id] ?? "coast"}
+                  alt={s.headline}
+                  sizes="(min-width: 1024px) 42vw, 100vw"
+                  priority={i === 0}
                 />
               </div>
             ))}
@@ -162,7 +162,7 @@ export function Hero() {
 
             <div className="absolute inset-x-6 bottom-6 flex items-end justify-between gap-4 text-paper">
               <span className="font-mono text-[0.5625rem] tracking-[0.16em] uppercase">
-                Plate {String(index + 1).padStart(2, "0")}
+                Photograph {String(index + 1).padStart(2, "0")}
               </span>
               <span className="max-w-[12rem] text-right text-[0.6875rem] leading-snug text-paper/70">
                 {slides[index].date}

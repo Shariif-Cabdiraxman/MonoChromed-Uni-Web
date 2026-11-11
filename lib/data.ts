@@ -2,7 +2,8 @@
  * Editorial content for the Xeeb University monochrome homepage.
  *
  * Entirely original — written for this project. No text or imagery is taken
- * from any existing institution, and all artwork is generated (see lib/art.tsx).
+ * from any existing institution; photography is public domain/CC0 (see
+ * public/images/CREDITS.md).
  */
 
 import { nav } from "./site";
@@ -439,3 +440,54 @@ export const campusPhotos: CampusPhoto[] = [
     credit: "Public domain / NASA",
   },
 ];
+
+/* --------------------------------------------------------- section imagery */
+
+/** Topic photograph for each hero slide. */
+export const slidePhotos: Record<string, string> = {
+  "gwk-coast-resilience": "coast",
+  "gwk-research-station": "marine",
+  "gwk-scholarship-fund": "education",
+};
+
+/** Topic photograph for each faculty profile. */
+export const facultyPhotos: Record<string, string> = {
+  "marine-coastal-sciences": "marine",
+  "renewable-energy": "energy",
+  "ai-data-science": "ai",
+  "global-health-nutrition": "health",
+  "urban-planning": "urban",
+  "finance-digital-economy": "finance",
+  "education-policy-society": "education",
+};
+
+/** Topic photograph for each research category. */
+export const researchPhotos: Record<string, string> = {
+  marine: "coast",
+  climate: "urban",
+  ai: "ai",
+  health: "health",
+  energy: "energy",
+  education: "education",
+};
+
+/** Topic photograph for each news story. */
+export const newsPhotos: Record<string, string> = {
+  gn01: "marine",
+  gn02: "energy",
+  gn03: "education",
+  gn04: "urban",
+  gn05: "coast",
+  gn06: "health",
+  gn07: "ai",
+  gn08: "urban",
+};
+
+export const aboutPhoto = "urban";
+export const campusVisitPhoto = "coast";
+
+/** Topic photograph for each programme level. */
+export const coursePhotos: Record<string, string> = {
+  undergraduate: "education",
+  postgraduate: "ai",
+};

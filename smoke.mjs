@@ -82,8 +82,8 @@ for (const c of [
 }
 
 // 1 header + 3 hero + 1 about + 1 faculty + 4 research + 4 news + 2 course = 16
-const plates = (html.match(/viewBox="0 0 1200 800"/g) || []).length;
-check("generated art plates", plates === 16, `${plates} plates`);
+const photos = (html.match(/<img[^>]+src="\/MonoChrome\/images\/[a-z-]+\.jpg"/g) || []).length;
+check("photographs across sections", photos >= 20, `${photos} photos`);
 check("open access badge", html.includes("Open access"));
 check("carousel controls", html.includes("Previous") && html.includes("Next"));
 check("course accordion", html.includes("Undergraduates"));
